@@ -120,15 +120,15 @@
   {% for r in results %}
   <div class="card">
     <div class="title">
-      {{ r.get("Title", "Untitled") }}
+      {{ r.get("title", "Untitled") }}
       {% if r.get("class_ID") %}
       <span class="pill">ID: {{ r.get("class_ID") }}</span>
       {% endif %}
     </div>
 
-    <div class="row"><strong>Instructor:</strong> {{ r.get("Instuctor", "") }}</div>
-    <div class="row"><strong>Location:</strong> {{ r.get("Location", "") }}</div>
-    <div class="row"><strong>Cost:</strong> £{{ r.get("Cost", "") }}</div>
+    <div class="row"><strong>Instructor:</strong> {{ r.get("instructor", "") }}</div>
+    <div class="row"><strong>Location:</strong> {{ r.get("location", "") }}</div>
+    <div class="row"><strong>Cost:</strong> £{{ r.get("cost", "") }}</div>
 
     {% if r.get("skills_developed") %}
     <div class="small"><strong>Skills:</strong> {{ r.get("skills_developed") }}</div>

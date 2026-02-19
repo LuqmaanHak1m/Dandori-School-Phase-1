@@ -17,10 +17,10 @@ else:
 
 # Optional: make sure expected columns exist (adjust names to match your CSV exactly)
 EXPECTED_COLS = [
-    "Title",
-    "Instuctor",  # or "Instructor" if that's what your CSV uses
-    "Location",
-    "Cost",
+    "title",
+    "instructor",  # or "Instructor" if that's what your CSV uses
+    "location",
+    "cost",
     "learning_objectives",
     "provided_materals",
     "skills_developed",
@@ -32,12 +32,12 @@ if missing:
     print(f"Warning: missing columns in CSV: {missing}")
 
 # Precompute dropdown options
-LOCATIONS = sorted([x for x in df.get("Location", pd.Series(dtype=str)).dropna().unique()])
+LOCATIONS = sorted([x for x in df.get("location", pd.Series(dtype=str)).dropna().unique()])
 # If Cost is numeric-ish, this helps filtering. If it's messy strings, leave it as-is.
-if "Cost" in df.columns:
-    df["Cost_num"] = pd.to_numeric(df["Cost"], errors="coerce")
+if "cost" in df.columns:
+    df["cost_num"] = pd.to_numeric(df["cost"], errors="coerce")
 else:
-    df["Cost_num"] = pd.NA
+    df["cost_num"] = pd.NA
 
 
 def filter_df(data: pd.DataFrame, q: str, location: str, max_cost: str) -> pd.DataFrame:
@@ -47,9 +47,9 @@ def filter_df(data: pd.DataFrame, q: str, location: str, max_cost: str) -> pd.Da
     if q:
         q_lower = q.strip().lower()
         search_cols = [
-            "Title",
-            "Instuctor",
-            "Location",
+            "title",
+            "instructor",
+            "location",
             "learning_objectives",
             "skills_developed",
             "course_description",
@@ -64,14 +64,14 @@ def filter_df(data: pd.DataFrame, q: str, location: str, max_cost: str) -> pd.Da
         filtered = filtered[mask]
 
     # Location filter
-    if location and location != "ALL" and "Location" in filtered.columns:
-        filtered = filtered[filtered["Location"].fillna("").astype(str) == location]
+    if location and location != "ALL" and "location" in filtered.columns:
+        filtered = filtered[filtered["location"].fillna("").astype(str) == location]
 
     # Max cost filter (numeric)
     if max_cost:
         try:
             max_cost_val = float(max_cost)
-            filtered = filtered[filtered["Cost_num"].notna() & (filtered["Cost_num"] <= max_cost_val)]
+            filtered = filtered[filtered["cost_num"].notna() & (filtered["cost_num"] <= max_cost_val)]
         except ValueError:
             pass  # ignore invalid max_cost input
 
