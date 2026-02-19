@@ -85,15 +85,17 @@ def index():
             results=[],
             total=0,
             csv_error=csv_error,
+            q="",
+            location="ALL",
+            max_cost="",
+            locations=[],
         )
 
     q = request.args.get("q", "").strip()
+    location = request.args.get("location", "ALL")
+    max_cost = request.args.get("max_cost", "").strip()
 
-    filtered = df
-
-    if q:
-        filtered = df[df["Title"].str.contains(q, case=False, na=False)]
-
+    filtered = filter_df(df, q=q, location=location, max_cost=max_cost)
     results = filtered.to_dict(orient="records")
 
     return render_template(
@@ -101,6 +103,10 @@ def index():
         results=results,
         total=len(results),
         csv_error=None,
+        q=q,
+        location=location,
+        max_cost=max_cost,
+        locations=LOCATIONS,
     )
 
 if __name__ == "__main__":
