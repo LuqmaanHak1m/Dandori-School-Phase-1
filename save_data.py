@@ -5,7 +5,7 @@ from read_pdf import read_pdf
 
 def clean(df: pd.DataFrame):
     df["cost"] = df["cost"].str.strip('£')
-
+    df["id"] = df["id"].str[6:]
     return df
 
 
