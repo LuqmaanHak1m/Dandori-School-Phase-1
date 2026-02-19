@@ -7,6 +7,17 @@ text = page.extract_text().replace("•", "")
 
 text = text.strip()
 
-print(list(text))
+text = text.split("\n")
 
-print(text)
+title = text[0]
+instructor = text[2]
+location = text[4]
+course_type = text[6]
+cost = text[8]
+
+
+print(title)
+print(instructor)
+print(location)
+print(course_type)
+print(cost)
