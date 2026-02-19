@@ -1,44 +1,10 @@
 import pandas as pd
-from pypdf import PdfReader
 import os
-
-
-def read_pdf(file_name):
-    reader = PdfReader(file_name)
-    page = reader.pages[0]
-
-    text = page.extract_text().replace("•", "")
-
-    text = text.strip()
-
-    text = text.split("\n")
-
-    title = text[0]
-    instructor = text[2]
-    location = text[4]
-    course_type = text[6]
-    cost = text[8]
-
-    learning_objectives = []
-    provided_materials = []
-
-    divider = text.index("Provided Materials")
-
-    for x in range(10, divider):
-        learning_objectives.append(text[x])
-
-    for x in range(divider + 1, len(text)):
-        provided_materials.append(text[x])
-
-    learning_objectives = ", ".join(learning_objectives)
-
-    provided_materials = ", ".join(provided_materials)
-
-    return {"Title": title, "Instuctor": instructor, "Location": location, "Course_Type": course_type, "Cost": cost, "Learning_Objectives": learning_objectives, "Provided_Materials": provided_materials}
+from read_pdf import read_pdf
 
 
 def clean(df: pd.DataFrame):
-    df["Cost"] = df["Cost"].str.strip('£')
+    df["cost"] = df["cost"].str.strip('£')
 
     return df
 
