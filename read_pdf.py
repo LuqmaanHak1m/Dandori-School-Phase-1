@@ -36,31 +36,31 @@ def read_pdf(file_name):
 
     text2 = text2.strip()
 
-    # text2 = text2.split("\n")
+    divider1 = text2.index("Skills Developed")
 
-    #print (text2)
-    import pdfplumber
 
-    # with pdfplumber.open("class_001_The_Art_of_Wondrous_Waffle_Weaving.pdf") as pdf:
-    #     page = pdf.pages[1]
+    with pdfplumber.open(file_name) as pdf:
+        page3 = pdf.pages[1]
         
-    #     # 1. Get all text with coordinates
-    #     text_objects = page.extract_words() 
+        # 1. Get all text with coordinates
+        text_objects = page3.extract_words()
         
-    #     # 2. Get all 'bubbles' (usually stored as 'rects' or 'curves' in PDF)
-    #     bubbles = page.rects  # or page.curves for circles
+        # 2. Get all 'bubbles' (usually stored as 'rects' or 'curves' in PDF)
+        bubbles = page3.rects  # or page.curves for circles
         
-    #     separated_data = []
-    #     for bubble in bubbles:
-    #         # Define the boundary of the bubble
-    #         bbox = (bubble['x0'], bubble['top'], bubble['x1'], bubble['bottom'])
+        separated_data = []
+        for bubble in bubbles:
+            # Define the boundary of the bubble
+            bbox = (bubble['x0'], bubble['top'], bubble['x1'], bubble['bottom'])
             
-    #         # Crop the page to that bubble and extract text
-    #         bubble_text = page.within_bbox(bbox).extract_text()
-    #         separated_data.append(bubble_text)
+            # Crop the page to that bubble and extract text
+            bubble_text = page3.within_bbox(bbox).extract_text()
+            separated_data.append(bubble_text)
 
-    # print(separated_data)
+    skills = f'{separated_data[3]}'
 
+    for x in range (4,8):
+        skills = skills + f', {separated_data[x]}'
 
     divider2 = text2.index("Course Description")
     divider3 = text2.index("Class ID")
@@ -78,16 +78,6 @@ def read_pdf(file_name):
     for x in range(divider3+10, divider3+20):
         id = id + text2[x]
 
-    # print(title)
-    # print(instructor)
-    # print(location)
-    # print(course_type)
-    # print(cost)
-    # print(learning_objectives)
-    # print(provided_materials)
-    # print(description)
-    # print(id)
-
     Dict = {}
     Dict["title"] = title
     Dict["instructor"] = instructor
@@ -98,9 +88,13 @@ def read_pdf(file_name):
     Dict["learning_objectives"] = learning_objectives
     provided_materials = ", ".join(provided_materials)
     Dict["provided_materials"] = provided_materials
-    Dict["skills_developed"] = 'Cooking, Culinary Arts, Baking'
+    Dict["skills_developed"] = skills
     Dict["description"] = description
     Dict["id"] = id
 
-    print(Dict)
     return Dict
+
+
+if __name__ == "__main__":
+    data = read_pdf("./pdfs/class_001_The_Art_of_Wondrous_Waffle_Weaving.pdf")
+    print(data)
