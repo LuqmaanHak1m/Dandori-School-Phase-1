@@ -53,6 +53,7 @@ def filter_df(data: pd.DataFrame, q: str, location: str, max_cost: str) -> pd.Da
             "learning_objectives",
             "skills_developed",
             "description",
+            "class_ID"
         ]
         existing_cols = [c for c in search_cols if c in filtered.columns]
 
