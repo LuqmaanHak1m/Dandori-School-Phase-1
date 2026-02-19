@@ -94,7 +94,9 @@ def read_pdf(file_name):
     Dict["location"] = location
     Dict["course_type"] = course_type
     Dict["cost"] = cost
+    learning_objectives = ", ".join(learning_objectives)
     Dict["learning_objectives"] = learning_objectives
+    provided_materials = ", ".join(provided_materials)
     Dict["provided_materials"] = provided_materials
     Dict["skills_developed"] = 'Cooking, Culinary Arts, Baking'
     Dict["description"] = description
