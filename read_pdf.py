@@ -20,8 +20,6 @@ provided_materials = []
 
 divider = text.index("Provided Materials")
 
-
-
 for x in range(10, divider):
     learning_objectives.append(text[x])
 
