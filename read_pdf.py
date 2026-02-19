@@ -2,8 +2,8 @@ from pypdf import PdfReader
 import pdfplumber
 
 
-def read_pdf():
-    reader = PdfReader("./pdfs/class_001_The_Art_of_Wondrous_Waffle_Weaving.pdf")
+def read_pdf(file_name):
+    reader = PdfReader(file_name)
     page = reader.pages[0]
 
     text = page.extract_text().replace("•", "")
