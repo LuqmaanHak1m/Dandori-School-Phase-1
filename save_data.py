@@ -37,6 +37,11 @@ def read_pdf(file_name):
     return {"Title": title, "Instuctor": instructor, "Location": location, "Course_Type": course_type, "Cost": cost, "Learning_Objectives": learning_objectives, "Provided_Materials": provided_materials}
 
 
+def clean(df: pd.DataFrame):
+    df["Cost"] = df["Cost"].str.strip('£')
+
+    return df
+
 
 def extract_all_pdfs():
     files = [f"./pdfs/{f}" for f in os.listdir('./pdfs') if os.path.isfile(os.path.join('./pdfs', f))]
@@ -49,9 +54,13 @@ def extract_all_pdfs():
         new_row = pd.DataFrame([data])
         courses = pd.concat([courses, new_row], ignore_index=True)
 
+    clean_courses = clean(courses)
+
     courses.to_csv("all_courses.csv")
         
     return courses
+
+
 
 if __name__ == "__main__":
     data = {"Title": "the art of wondrous waffle weaving", "Instuctor": "chef waffleby", "Location": "Harrogate", "Cost": "£75.00"}#, "learning_objectives", "provided_materals" "skills_developed", "course_description"  "class_ID"}
