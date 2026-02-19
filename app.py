@@ -48,7 +48,7 @@ def filter_df(data: pd.DataFrame, q: str, location: str, max_cost: str) -> pd.Da
         q_lower = q.strip().lower()
         search_cols = [
             "title",
-            "instuctor",
+            "instructor",
             "location",
             "learning_objectives",
             "skills_developed",
