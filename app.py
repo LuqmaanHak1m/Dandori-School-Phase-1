@@ -22,9 +22,9 @@ EXPECTED_COLS = [
     "location",
     "cost",
     "learning_objectives",
-    "provided_materals",
+    "provided_materials",
     "skills_developed",
-    "course_description",
+    "description",
     "class_ID",
 ]
 missing = [c for c in EXPECTED_COLS if c not in df.columns]
@@ -52,7 +52,7 @@ def filter_df(data: pd.DataFrame, q: str, location: str, max_cost: str) -> pd.Da
             "location",
             "learning_objectives",
             "skills_developed",
-            "course_description",
+            "description",
         ]
         existing_cols = [c for c in search_cols if c in filtered.columns]
 

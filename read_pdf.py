@@ -90,7 +90,7 @@ def read_pdf(file_name):
     Dict["provided_materials"] = provided_materials
     Dict["skills_developed"] = skills
     Dict["description"] = description
-    Dict["id"] = id
+    Dict["class_ID"] = id
 
     return Dict
 
