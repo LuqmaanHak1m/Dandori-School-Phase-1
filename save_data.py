@@ -56,9 +56,9 @@ def extract_all_pdfs():
 
     clean_courses = clean(courses)
 
-    courses.to_csv("all_courses.csv")
+    clean_courses.to_csv("all_courses.csv")
         
-    return courses
+    return clean_courses
 
 
 
