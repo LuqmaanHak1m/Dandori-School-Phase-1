@@ -12,23 +12,35 @@ def read_pdf(file_name):
 
     text = text.split("\n")
 
-    title = text[0]
-    instructor = text[2]
-    location = text[4]
-    course_type = text[6]
-    cost = text[8]
+    divider_IN = text.index("Instructor:")
+
+    title = text[: divider_IN]
+
+    all_fields = []
+
+
+    short_dividers = ["Instructor:", "Location:", "Course Type:", "Cost:"]
+
+    long_dividers = ["Learning Objectives", "Provided Materials"]
+
+    for divider in short_dividers:
+        index = text.index(divider)
+
+        all_fields.append(text[index + 1])
+
 
     learning_objectives = []
     provided_materials = []
 
-    divider = text.index("Provided Materials")
+    divider_LO = text.index("Learning Objectives")
+    divider_PM = text.index("Provided Materials")
 
-    for x in range(10, divider):
-        learning_objectives.append(text[x])
+    learning_objectives = text[divider_LO + 1 : divider_PM]
+    provided_materials = text[divider_PM + 1 :]
 
-    for x in range(divider + 1, len(text)):
-        provided_materials.append(text[x])
 
+    ##########################
+    # Page 2
 
     page2 = reader.pages[1]
 
@@ -36,7 +48,9 @@ def read_pdf(file_name):
 
     text2 = text2.strip()
 
-    divider1 = text2.index("Skills Developed")
+    divider_SD = text2.index("Skills Developed")
+
+    provided_materials = text[: divider_SD]
 
 
     with pdfplumber.open(file_name) as pdf:
@@ -79,11 +93,12 @@ def read_pdf(file_name):
         id = id + text2[x]
 
     Dict = {}
+    title = " ".join(title)
     Dict["title"] = title
-    Dict["instructor"] = instructor
-    Dict["location"] = location
-    Dict["course_type"] = course_type
-    Dict["cost"] = cost
+    Dict["instructor"] = all_fields[0]
+    Dict["location"] = all_fields[1]
+    Dict["course_type"] = all_fields[2]
+    Dict["cost"] = all_fields[3]
     learning_objectives = ", ".join(learning_objectives)
     Dict["learning_objectives"] = learning_objectives
     provided_materials = ", ".join(provided_materials)
@@ -92,8 +107,11 @@ def read_pdf(file_name):
     Dict["description"] = description
     Dict["class_ID"] = id
 
+
     return Dict
 
 
 if __name__ == "__main__":
-    data = read_pdf("./pdfs/class_001_The_Art_of_Wondrous_Waffle_Weaving.pdf")
+    data = read_pdf("../pdfs/class_119_enchanted_quill__scribe_owl_penmanship_and_magical_letter_writing.pdf")
+    print(data)
+

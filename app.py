@@ -4,7 +4,7 @@ import pandas as pd
 
 app = Flask(__name__)
 
-CSV_PATH = "data/all_courses.csv"
+CSV_PATH = "./utils/all_courses.csv"
 
 # Try to load CSV safely
 if os.path.exists(CSV_PATH):
