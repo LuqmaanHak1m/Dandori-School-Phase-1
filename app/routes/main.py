@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from ..queries.courses import get_locations, query_courses
 
 bp = Blueprint("main", __name__)
@@ -22,3 +22,14 @@ def index():
         max_cost=max_cost,
         locations=locations,
     )
+
+@bp.get("/chatbot")
+def chatbot():
+    return render_template("chatbot.html")
+
+@bp.post("/chatbot/message")
+def chatbot_message():
+    data = request.get_json()
+    user_message = data.get("message", "")
+    
+    return jsonify({"response": "It's coming"})
