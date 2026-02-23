@@ -4,7 +4,7 @@ import pandas as pd
 
 app = Flask(__name__)
 
-CSV_PATH = "all_courses.csv"
+CSV_PATH = "data/all_courses.csv"
 
 # Try to load CSV safely
 if os.path.exists(CSV_PATH):
@@ -98,7 +98,6 @@ def index():
 
     filtered = filter_df(df, q=q, location=location, max_cost=max_cost)
     results = filtered.to_dict(orient="records")
-    print(results)
 
     return render_template(
         "index.html",
