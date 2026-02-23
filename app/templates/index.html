@@ -4,85 +4,444 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Course Search</title>
+  <title>School of Dandoori - Course Search</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: system-ui, Arial, sans-serif;
-      margin: 24px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: 
+        linear-gradient(135deg, rgba(45, 80, 22, 0.85) 0%, rgba(61, 107, 46, 0.8) 50%, rgba(74, 124, 89, 0.75) 100%),
+        url('/static/images/public-domain-vectors-RaemOoVqzLA-unsplash.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(139, 195, 74, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(124, 179, 66, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(76, 175, 80, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        url('/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png');
+      background-position: 
+        110% 70%;
+      background-size: 
+        250px auto;
+      background-repeat: no-repeat;
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .decorative-leaf-1 {
+      position: fixed;
+      top: 10%;
+      right: 5%;
+      width: 200px;
+      height: auto;
+      opacity: 0.2;
+      transform: rotate(15deg);
+      pointer-events: none;
+      z-index: 0;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .decorative-leaf-2 {
+      position: fixed;
+      bottom: 15%;
+      left: 3%;
+      width: 180px;
+      height: auto;
+      opacity: 0.18;
+      transform: rotate(-20deg);
+      pointer-events: none;
+      z-index: 0;
+      animation: float 7s ease-in-out infinite 1s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(15deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(20deg);
+      }
+    }
+
+    .header {
+      background: rgba(26, 35, 20, 0.95);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 20px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 10;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      padding: 0;
+      filter: drop-shadow(0 4px 16px rgba(255, 213, 79, 0.6)) drop-shadow(0 0 30px rgba(255, 235, 59, 0.4));
+      transition: all 0.3s ease;
+      display: block;
+      background: transparent !important;
+      mix-blend-mode: normal;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 6px 20px rgba(255, 213, 79, 0.8)) drop-shadow(0 0 40px rgba(255, 235, 59, 0.5));
+    }
+
+    .brand-name {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .chat-btn {
+      background: #ffd54f;
+      color: #4a7c59;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 213, 79, 0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .chat-btn:hover {
+      background: #ffeb3b;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 213, 79, 0.5);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .search-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      margin-bottom: 32px;
+      border: 1px solid rgba(124, 179, 66, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .search-section::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 200px;
+      height: 200px;
+      background: url('/static/images/hanin-abouzeid-XJbj64RKASA-unsplash.png') no-repeat center;
+      background-size: contain;
+      opacity: 0.08;
+      transform: rotate(25deg);
+      pointer-events: none;
+    }
+
+    .search-title {
+      color: #4a7c59;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
     }
 
     form {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       flex-wrap: wrap;
       align-items: end;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     label {
       display: flex;
       flex-direction: column;
       font-size: 14px;
-      gap: 6px;
+      gap: 8px;
+      color: #4a7c59;
+      font-weight: 600;
     }
 
     input,
     select {
-      padding: 8px;
+      padding: 12px 16px;
       font-size: 14px;
       min-width: 200px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      transition: border-color 0.3s;
+      font-family: inherit;
     }
 
-    button {
-      padding: 9px 14px;
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #7cb342;
+    }
+
+    button[type="submit"] {
+      padding: 12px 28px;
       font-size: 14px;
       cursor: pointer;
+      background: #7cb342;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background: #689f38;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(124, 179, 66, 0.3);
+    }
+
+    .clear-link {
+      align-self: center;
+      color: #7cb342;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 16px;
+      transition: color 0.3s;
+    }
+
+    .clear-link:hover {
+      color: #689f38;
     }
 
     .meta {
-      margin: 10px 0 18px;
-      color: #444;
+      margin: 0 0 24px;
+      color: #e8f5e9;
+      font-size: 15px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 8px;
+      border-left: 4px solid #ffd54f;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .meta strong {
+      color: #ffd54f;
+    }
+
+    .results-grid {
+      display: grid;
+      gap: 20px;
     }
 
     .card {
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(124, 179, 66, 0.3);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 120px;
+      height: 120px;
+      background: url('/static/images/agil-baroto-sutji-GrqWxipnqmw-unsplash.png') no-repeat center;
+      background-size: contain;
+      opacity: 0.05;
+      transform: rotate(-15deg);
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover::before {
+      opacity: 0.08;
+    }
+
+    .card:hover {
+      border-color: #ffd54f;
+      box-shadow: 0 8px 24px rgba(255, 213, 79, 0.3), 0 0 20px rgba(124, 179, 66, 0.2);
+      transform: translateY(-4px);
     }
 
     .title {
       font-weight: 700;
-      font-size: 16px;
-      margin-bottom: 6px;
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #4a7c59;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .row {
-      color: #333;
-      margin: 2px 0;
+      color: #555;
+      margin: 8px 0;
+      font-size: 15px;
+    }
+
+    .row strong {
+      color: #4a7c59;
     }
 
     .small {
       color: #666;
-      font-size: 13px;
-      margin-top: 8px;
+      font-size: 14px;
+      margin-top: 12px;
+      line-height: 1.6;
     }
 
     .pill {
       display: inline-block;
-      border: 1px solid #ccc;
+      background: #ffd54f;
+      color: #4a7c59;
       border-radius: 999px;
-      padding: 2px 8px;
+      padding: 4px 12px;
       font-size: 12px;
-      margin-left: 6px;
-      color: #444;
+      font-weight: 600;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: #e8f5e9;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .no-results-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .page-btn {
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(124, 179, 66, 0.3);
+      border-radius: 8px;
+      color: #4a7c59;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      min-width: 44px;
+      text-align: center;
+    }
+
+    .page-btn:hover {
+      border-color: #ffd54f;
+      background: rgba(255, 213, 79, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .page-btn.active {
+      background: #7cb342;
+      color: white;
+      border-color: #7cb342;
+      cursor: default;
+    }
+
+    .page-btn.active:hover {
+      transform: none;
     }
   </style>
 </head>
 
 <body>
+  <img src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png" alt="" class="decorative-leaf-1" />
+  <img src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png" alt="" class="decorative-leaf-2" />
+  
+  <div class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="/static/images/dandoori-logo.png" alt="School of Dandoori" class="logo" />
+        <div class="brand-name">School of Dandoori</div>
+      </div>
+      <a href="/chatbot" class="chat-btn">
+        💬 Chat with Assistant
+      </a>
+    </div>
+  </div>
 
-  <h1>Course Search</h1>
+  <div class="container">
+    <div class="search-section">
+      <h2 class="search-title">🔍 Find Your Perfect Course</h2>
 
   <form method="get" action="/">
     <label>
@@ -106,17 +465,23 @@
     </label>
 
     <button type="submit">Search</button>
-    <a href="/" style="align-self: center; margin-left: 6px;">Clear</a>
+    <a href="/" class="clear-link">Clear</a>
   </form>
+    </div>
 
   <div class="meta">
-    Showing <strong>{{ total }}</strong> result{% if total != 1 %}s{% endif %}.
+    Showing <strong>{{ total }}</strong> result{% if total != 1 %}s{% endif %}
+    {% if total_pages > 1 %}(Page {{ page }} of {{ total_pages }}){% endif %}
   </div>
 
   {% if results|length == 0 %}
-  <p>No matches. Try a different search.</p>
+  <div class="no-results">
+    <div class="no-results-icon">🔍</div>
+    <p>No matches found. Try a different search.</p>
+  </div>
   {% endif %}
 
+  <div class="results-grid">
   {% for r in results %}
   <div class="card">
     <div class="title">
@@ -144,6 +509,31 @@
     {% endif %}
   </div>
   {% endfor %}
+  </div>
+
+  {% if total_pages > 1 %}
+  <div class="pagination">
+    {% if page > 1 %}
+    <a href="?q={{ q }}&location={{ location }}&max_cost={{ max_cost }}&page={{ page - 1 }}" class="page-btn">← Previous</a>
+    {% endif %}
+    
+    {% for p in range(1, total_pages + 1) %}
+      {% if p == page %}
+        <span class="page-btn active">{{ p }}</span>
+      {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
+        <a href="?q={{ q }}&location={{ location }}&max_cost={{ max_cost }}&page={{ p }}" class="page-btn">{{ p }}</a>
+      {% elif p == page - 3 or p == page + 3 %}
+        <span class="page-btn">...</span>
+      {% endif %}
+    {% endfor %}
+    
+    {% if page < total_pages %}
+    <a href="?q={{ q }}&location={{ location }}&max_cost={{ max_cost }}&page={{ page + 1 }}" class="page-btn">Next →</a>
+    {% endif %}
+  </div>
+  {% endif %}
+  </div>
+  </div>
 
 </body>
 
