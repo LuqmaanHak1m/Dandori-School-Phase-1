@@ -56,24 +56,21 @@ def read_pdf(file_name):
     with pdfplumber.open(file_name) as pdf:
         page3 = pdf.pages[1]
         
-        # 1. Get all text with coordinates
-        text_objects = page3.extract_words()
-        
-        # 2. Get all 'bubbles' (usually stored as 'rects' or 'curves' in PDF)
-        bubbles = page3.rects  # or page.curves for circles
+        bubbles = page3.rects  
         
         separated_data = []
         for bubble in bubbles:
-            # Define the boundary of the bubble
+            
             bbox = (bubble['x0'], bubble['top'], bubble['x1'], bubble['bottom'])
             
-            # Crop the page to that bubble and extract text
             bubble_text = page3.within_bbox(bbox).extract_text()
             separated_data.append(bubble_text)
 
-    skills = f'{separated_data[3]}'
 
-    for x in range (4,8):
+    skills_index = separated_data.index("Skills Developed")
+    skills = f'{separated_data[skills_index + 2]}'
+
+    for x in range (skills_index + 3, skills_index + 7):
         skills = skills + f', {separated_data[x]}'
 
     divider2 = text2.index("Course Description")
@@ -112,6 +109,4 @@ def read_pdf(file_name):
 
 
 if __name__ == "__main__":
-    data = read_pdf("../pdfs/class_119_enchanted_quill__scribe_owl_penmanship_and_magical_letter_writing.pdf")
-    print(data)
-
+    data = read_pdf("../pdfs/class_204_enchanted_leaf_weaving_and_whispering.pdf")
