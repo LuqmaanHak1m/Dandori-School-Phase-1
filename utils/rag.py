@@ -5,18 +5,18 @@ from chromadb.config import Settings
 import os
 from openai import OpenAI
 import requests
-from dotenv import load_dotenv
-load_dotenv()
+import re
 
-api_key=os.getenv("API_KEY")
-endpoint=os.getenv("ENDPOINT")
+from pathlib import Path
+import pandas as pd
 
-chat_client = OpenAI(api_key=api_key, 
-                    base_url=endpoint)
+BASE_DIR = Path(__file__).resolve().parent
+CSV_PATH = BASE_DIR / "all_courses.csv"
+
 
 
 def load_data() -> list[dict]:
-    data = pd.read_csv("all_courses.csv")
+    data = pd.read_csv(CSV_PATH)
 
     data.drop(columns=["Unnamed: 0"], inplace=True)
 
@@ -66,33 +66,25 @@ def embed_data(collection):
 
     return collection
 
-def load_collection():   
-
-    client = chromadb.PersistentClient(path="../chroma_db")
-
-    collection = client.get_or_create_collection("courses")
-
-    if collection.count() < 1:
-        embed_collection = embed_data(collection)
-        return embed_collection
-    else:
-        return collection
-
     
 if __name__ == "__main__":
     print("Starting")
 
-    collection = load_collection()
+    client = chromadb.Client()
+    collection = client.get_or_create_collection("courses")
+    collection = embed_data(collection)
 
     print("Done")
     print(f"Collection: {collection}")
 
+    # Test Collection
+    results_num = 10
+
     results = collection.query(
-        query_texts=["Pastry and Magic"],
-        n_results=5
+        query_texts=["What courses are there for less than £75 in Norfolk?"],
+        n_results=results_num
     )
 
-    for i in range(5):
+    for i in range(results_num):
         print(results["documents"][0][i])
-
 
