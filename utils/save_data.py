@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from read_pdf import read_pdf
+from utils.read_pdf import read_pdf
 
 
 def clean(df: pd.DataFrame):
