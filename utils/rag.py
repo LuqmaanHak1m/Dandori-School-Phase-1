@@ -1,4 +1,18 @@
 import pandas as pd
+import chromadb
+from chromadb import Documents, EmbeddingFunction, Embeddings
+from chromadb.config import Settings
+import os
+from openai import OpenAI
+import requests
+from dotenv import load_dotenv
+load_dotenv()
+
+api_key=os.getenv("API_KEY")
+endpoint=os.getenv("ENDPOINT")
+
+chat_client = OpenAI(api_key=api_key, 
+                    base_url=endpoint)
 
 
 def load_data() -> list[dict]:
@@ -37,14 +51,48 @@ def chunker(records:list[dict]):
     return chunks
 
 
-def embed_data():
-    pass
-
-if __name__ == "__main__":
-
+def embed_data(collection):
+    # Load data and chunk it
     data: list[dict] = load_data()
     chunks = chunker(data)
 
-    print(chunks[0])
+
+    # Add the chunks to the collection
+    collection.add(
+        ids=[i.get('id') for i in chunks] ,
+        documents=[i.get('text') for i in chunks],
+        metadatas=[i.get('metadata') for i in chunks],
+    )
+
+    return collection
+
+def load_collection():   
+
+    client = chromadb.PersistentClient(path="../chroma_db")
+
+    collection = client.get_or_create_collection("courses")
+
+    if collection.count() < 1:
+        embed_collection = embed_data(collection)
+        return embed_collection
+    else:
+        return collection
+
+    
+if __name__ == "__main__":
+    print("Starting")
+
+    collection = load_collection()
+
+    print("Done")
+    print(f"Collection: {collection}")
+
+    results = collection.query(
+        query_texts=["Pastry and Magic"],
+        n_results=5
+    )
+
+    for i in range(5):
+        print(results["documents"][0][i])
 
 
