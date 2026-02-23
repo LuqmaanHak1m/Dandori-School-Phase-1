@@ -97,4 +97,3 @@ def read_pdf(file_name):
 
 if __name__ == "__main__":
     data = read_pdf("./pdfs/class_001_The_Art_of_Wondrous_Waffle_Weaving.pdf")
-    print(data)
