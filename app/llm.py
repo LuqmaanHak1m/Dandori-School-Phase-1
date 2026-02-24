@@ -5,9 +5,10 @@ from chromadb.config import Settings
 import os
 from openai import OpenAI
 import requests
-import re
+import json
 
 from utils.rag import embed_data
+from .queries.courses import query_courses 
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -17,6 +18,37 @@ endpoint=os.getenv("ENDPOINT")
 
 chat_client = OpenAI(api_key=api_key, 
                     base_url=endpoint)
+
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "query_courses",
+            "description": (
+                "Search courses in the database with optional keyword, location, and maximum cost filters. "
+                "Returns a list of courses with title, description, location, and cost."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "q": {
+                        "type": "string",
+                        "description": "Keyword or topic to search for (e.g., 'baking', 'calligraphy')"
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "City or region to filter by (e.g., 'Norfolk', 'London')"
+                    },
+                    "max_cost": {
+                        "type": "string",
+                        "description": "Maximum course cost in GBP (e.g., '75')"
+                    }
+                },
+                "required": []
+            }
+        }
+    }
+]
 
 
 def load_collection():   
@@ -57,11 +89,29 @@ def call_LLM(query= "", top_results = 1, temp = 0.4, max_tokens=512):
             temperature=temp,
             max_tokens=max_tokens
         )
+
+        # if response.tool_calls:
+        #     tool_call = response.tool_calls[0]
+        #     args = json.loads(tool_call.function.arguments)
+
         return response.choices[0].message.content
     else:
         return "No query was received"
 
 
+def call_database():
+
+    # results = query_courses(
+    #     q=args.get("q"),
+    #     location=args.get("location"),
+    #     max_cost=args.get("max_cost")
+    # )
+    pass
+
+
 if __name__ == "__main__":
     load_collection()
-    print("Working well")
+
+    user_query = "I like arts and crafts and I am in Edinburgh. What course would you recommend?"
+
+    print(call_LLM(user_query, 5))
