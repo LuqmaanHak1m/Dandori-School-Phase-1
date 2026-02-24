@@ -63,55 +63,114 @@ def load_collection():
     else:
         return collection
 
-def call_LLM(query= "", top_results = 1, temp = 0.4, max_tokens=512):
+def call_LLM(query= "", temp = 0.4, max_tokens=512):
 
     collection = load_collection()
-
-    relevant_info = collection.query(
-                            query_texts=[query],
-                            n_results=top_results 
-                            )
-
-    # Embed the collection before the query 
-    embedded_query = f"""{relevant_info}\n {query}"""
+    
+    messages = [
+                {"role": "system", "content": """
+                 You are The Pandaroo, the friendly mascot of a whimsical, adult-only wellbeing school. Your role is to inform users about upcoming courses, classes and events. Communicate clearly, calmly and warmly. Add a light touch of whimsy when appropriate but prioritise accuracy and clarity. Do not give advice, coaching or wellbeing guidance beyond what is described in the course details. Present dates, times, locations and descriptions reliably. If information is missing or uncertain, say so plainly.You are welcoming and gentle but primarily informational.
+                 """},
+                {"role": "user", "content": query}
+            ]
 
 
     if query != "":
         # Get a response from the client
         response = chat_client.chat.completions.create(
             model="google/gemini-2.0-flash-001",
-            messages=[
-                {"role": "system", "content": """
-                 You are The Pandaroo, the friendly mascot of a whimsical, adult-only wellbeing school. Your role is to inform users about upcoming courses, classes and events. Communicate clearly, calmly and warmly. Add a light touch of whimsy when appropriate but prioritise accuracy and clarity. Do not give advice, coaching or wellbeing guidance beyond what is described in the course details. Present dates, times, locations and descriptions reliably. If information is missing or uncertain, say so plainly.You are welcoming and gentle but primarily informational.
-                 """},
-                {"role": "user", "content": embedded_query}
-            ],
+            messages=messages,
             temperature=temp,
-            max_tokens=max_tokens
+            max_tokens=max_tokens,
+            tools=tools,
+            tool_choice="auto"
         )
 
-        # if response.tool_calls:
-        #     tool_call = response.tool_calls[0]
-        #     args = json.loads(tool_call.function.arguments)
+        message = response.choices[0].message
 
-        return response.choices[0].message.content
+        # If there is a tool call then extract it
+        # and call the database
+        if message.tool_calls:
+            tool_call = message.tool_calls[0]
+            args = json.loads(tool_call.function.arguments)
+
+            print(tool_call)
+
+            tool_result = call_database(
+                collection,
+                q=args.get("q"),
+                location=args.get("location"),
+                max_cost=args.get("max_cost"),
+                top_n=args.get("top_n", 5)
+            )
+
+        else:
+            return message.content
+        
+
+        # Append the earlier message
+        messages.append(message)
+
+        # Append the tool call and result
+        messages.append({
+            "role": "tool",
+            "tool_call_id": tool_call.id,
+            "content": json.dumps(tool_result)
+        })
+
+        final_response = chat_client.chat.completions.create(
+            model="google/gemini-2.0-flash-001",
+            messages=messages
+        )
+
+        return final_response.choices[0].message.content
+
     else:
         return "No query was received"
 
 
-def call_database():
+def call_database(
+    collection,
+    q: str | None,
+    location: str | None = None,
+    max_cost: float | None = None,
+    top_n: int = 5
+) -> list[dict]:
+    
+    # If query is None then make it "courses"
+    # otherwise it won't work
+    query_text = q.strip() if q and q.strip() else "courses"
 
-    # results = query_courses(
-    #     q=args.get("q"),
-    #     location=args.get("location"),
-    #     max_cost=args.get("max_cost")
-    # )
-    pass
+    filters = []
+
+    if location and location.upper() != "ALL":
+        filters.append({"location": location})
+
+    if max_cost is not None:
+        filters.append({"cost": {"$lte": float(max_cost)}})
+
+    where = {"$and": filters} if filters else None
+
+    results = collection.query(
+        query_texts=[query_text],
+        n_results=top_n,
+        where=where,
+        include=["documents", "metadatas"]
+    )
+
+    # return documents and metadatas zipped together
+    return [
+        {"text": doc, "metadata": meta}
+        for doc, meta in zip(
+            results["documents"][0],
+            results["metadatas"][0]
+        )
+    ]
 
 
 if __name__ == "__main__":
     load_collection()
 
-    user_query = "I like arts and crafts and I am in Edinburgh. What course would you recommend?"
+    user_query = "What courses are there for under £75 in Norfolk?"
 
     print(call_LLM(user_query, 5))
