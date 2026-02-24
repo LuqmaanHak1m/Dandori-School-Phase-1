@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ instructor.name }} - School of Dandori</title>
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/instructor_profile.css" />
+</head>
+
+<body>
+  <img src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png" alt="" class="decorative-leaf-1" />
+  <img src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png" alt="" class="decorative-leaf-2" />
+  
+  <div class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="/static/images/dandoori-logo.png" alt="School of Dandori" class="logo" />
+        <div class="brand-name">School of Dandori</div>
+      </div>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/courses" class="nav-link">Browse Courses</a>
+        <a href="/profile" class="nav-link">👤 My Profile</a>
+        <a href="/chatbot" class="nav-link">💬 Chat</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="instructor-header">
+      <img src="/static/images/{{ instructor.image }}" alt="{{ instructor.name }}" class="instructor-avatar-large" />
+      <div class="instructor-info">
+        <h1 class="instructor-name-large">{{ instructor.name }}</h1>
+        <p class="instructor-experience-large">{{ instructor.years_teaching }} years of teaching experience</p>
+        <div class="specialties-inline">
+          {% for specialty in instructor.specialties %}
+          <span class="specialty-badge-large">{{ specialty }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div class="main-content">
+        <div class="section">
+          <h2 class="section-title">📖 About {{ instructor.name }}</h2>
+          <p class="bio-text">{{ instructor.bio }}</p>
+          <p class="bio-text">{{ instructor.full_bio }}</p>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">💭 Teaching Philosophy</h2>
+          <p class="philosophy-text">{{ instructor.teaching_philosophy }}</p>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">⭐ Student Reviews</h2>
+          {% for review in instructor.student_reviews %}
+          <div class="review-card">
+            <div class="review-header">
+              <div>
+                <div class="review-student">{{ review.student }}</div>
+                <div class="review-course">{{ review.course }}</div>
+              </div>
+              <div class="review-rating">{{ review.rating }}</div>
+            </div>
+            <p class="review-text">{{ review.review }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="section">
+          <h2 class="section-title">📚 Courses Taught</h2>
+          <ul class="courses-list">
+            {% for course in instructor.courses %}
+            <li>{{ course }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">🏆 Achievements</h2>
+          <ul class="achievements-list">
+            {% for achievement in instructor.achievements %}
+            <li>{{ achievement }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">📅 Upcoming Classes</h2>
+          {% for class in instructor.upcoming_classes %}
+          <div class="upcoming-class">
+            <div class="class-title">{{ class.title }}</div>
+            <div class="class-detail">📍 {{ class.location }}</div>
+            <div class="class-detail">📅 {{ class.date }}</div>
+            <div class="class-detail">🕐 {{ class.time }}</div>
+            <div class="class-spots">{{ class.spots_left }} spots left</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
