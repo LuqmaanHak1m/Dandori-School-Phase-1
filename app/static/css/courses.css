@@ -1,0 +1,265 @@
+/* Course browsing page specific styles */
+
+.search-section {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  margin-bottom: 32px;
+  border: 1px solid rgba(124, 179, 66, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.search-section::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: url('/static/images/hanin-abouzeid-XJbj64RKASA-unsplash.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.08;
+  transform: rotate(25deg);
+  pointer-events: none;
+}
+
+.search-title {
+  color: #4a7c59;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+form {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: end;
+  margin-bottom: 20px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  gap: 8px;
+  color: #4a7c59;
+  font-weight: 600;
+}
+
+input,
+select {
+  padding: 12px 16px;
+  font-size: 14px;
+  min-width: 200px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+  font-family: inherit;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #7cb342;
+}
+
+button[type="submit"] {
+  padding: 12px 28px;
+  font-size: 14px;
+  cursor: pointer;
+  background: #7cb342;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: #689f38;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 179, 66, 0.3);
+}
+
+.clear-link {
+  align-self: center;
+  color: #7cb342;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: color 0.3s;
+}
+
+.clear-link:hover {
+  color: #689f38;
+}
+
+.meta {
+  margin: 0 0 24px;
+  color: #e8f5e9;
+  font-size: 15px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  border-left: 4px solid #ffd54f;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.meta strong {
+  color: #ffd54f;
+}
+
+.results-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(124, 179, 66, 0.3);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 120px;
+  height: 120px;
+  background: url('/static/images/agil-baroto-sutji-GrqWxipnqmw-unsplash.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.05;
+  transform: rotate(-15deg);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+  opacity: 0.08;
+}
+
+.card:hover {
+  border-color: #ffd54f;
+  box-shadow: 0 8px 24px rgba(255, 213, 79, 0.3), 0 0 20px rgba(124, 179, 66, 0.2);
+  transform: translateY(-4px);
+}
+
+.title {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #4a7c59;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.row {
+  color: #555;
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+.row strong {
+  color: #4a7c59;
+}
+
+.small {
+  color: #666;
+  font-size: 14px;
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+.pill {
+  display: inline-block;
+  background: #ffd54f;
+  color: #4a7c59;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  color: #e8f5e9;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.no-results-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(124, 179, 66, 0.3);
+  border-radius: 8px;
+  color: #4a7c59;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 44px;
+  text-align: center;
+}
+
+.page-btn:hover {
+  border-color: #ffd54f;
+  background: rgba(255, 213, 79, 0.2);
+  transform: translateY(-2px);
+}
+
+.page-btn.active {
+  background: #7cb342;
+  color: white;
+  border-color: #7cb342;
+  cursor: default;
+}
+
+.page-btn.active:hover {
+  transform: none;
+}
+
+
+.instructor-link {
+  color: #7cb342;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.instructor-link:hover {
+  color: #689f38;
+  border-bottom-color: #ffd54f;
+}

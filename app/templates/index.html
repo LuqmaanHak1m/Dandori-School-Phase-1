@@ -5,422 +5,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>School of Dandoori - Course Search</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: 
-        linear-gradient(135deg, rgba(45, 80, 22, 0.85) 0%, rgba(61, 107, 46, 0.8) 50%, rgba(74, 124, 89, 0.75) 100%),
-        url('/static/images/public-domain-vectors-RaemOoVqzLA-unsplash.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      background-repeat: no-repeat;
-      min-height: 100vh;
-      position: relative;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: 
-        radial-gradient(circle at 20% 50%, rgba(139, 195, 74, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(124, 179, 66, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(76, 175, 80, 0.08) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: 
-        url('/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png');
-      background-position: 
-        110% 70%;
-      background-size: 
-        250px auto;
-      background-repeat: no-repeat;
-      opacity: 0.12;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .decorative-leaf-1 {
-      position: fixed;
-      top: 10%;
-      right: 5%;
-      width: 200px;
-      height: auto;
-      opacity: 0.2;
-      transform: rotate(15deg);
-      pointer-events: none;
-      z-index: 0;
-      animation: float 6s ease-in-out infinite;
-    }
-
-    .decorative-leaf-2 {
-      position: fixed;
-      bottom: 15%;
-      left: 3%;
-      width: 180px;
-      height: auto;
-      opacity: 0.18;
-      transform: rotate(-20deg);
-      pointer-events: none;
-      z-index: 0;
-      animation: float 7s ease-in-out infinite 1s;
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0) rotate(15deg);
-      }
-      50% {
-        transform: translateY(-20px) rotate(20deg);
-      }
-    }
-
-    .header {
-      background: rgba(26, 35, 20, 0.95);
-      backdrop-filter: blur(10px);
-      color: white;
-      padding: 20px 40px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      position: relative;
-      z-index: 10;
-    }
-
-    .header-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo {
-      width: 60px;
-      height: 60px;
-      padding: 0;
-      filter: drop-shadow(0 4px 16px rgba(255, 213, 79, 0.6)) drop-shadow(0 0 30px rgba(255, 235, 59, 0.4));
-      transition: all 0.3s ease;
-      display: block;
-      background: transparent !important;
-      mix-blend-mode: normal;
-    }
-
-    .logo:hover {
-      transform: scale(1.05);
-      filter: drop-shadow(0 6px 20px rgba(255, 213, 79, 0.8)) drop-shadow(0 0 40px rgba(255, 235, 59, 0.5));
-    }
-
-    .brand-name {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .chat-btn {
-      background: #ffd54f;
-      color: #4a7c59;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 25px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(255, 213, 79, 0.4);
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .chat-btn:hover {
-      background: #ffeb3b;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(255, 213, 79, 0.5);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .search-section {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      margin-bottom: 32px;
-      border: 1px solid rgba(124, 179, 66, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .search-section::before {
-      content: '';
-      position: absolute;
-      top: -50px;
-      right: -50px;
-      width: 200px;
-      height: 200px;
-      background: url('/static/images/hanin-abouzeid-XJbj64RKASA-unsplash.png') no-repeat center;
-      background-size: contain;
-      opacity: 0.08;
-      transform: rotate(25deg);
-      pointer-events: none;
-    }
-
-    .search-title {
-      color: #4a7c59;
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 24px;
-    }
-
-    form {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      align-items: end;
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: flex;
-      flex-direction: column;
-      font-size: 14px;
-      gap: 8px;
-      color: #4a7c59;
-      font-weight: 600;
-    }
-
-    input,
-    select {
-      padding: 12px 16px;
-      font-size: 14px;
-      min-width: 200px;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
-      transition: border-color 0.3s;
-      font-family: inherit;
-    }
-
-    input:focus,
-    select:focus {
-      outline: none;
-      border-color: #7cb342;
-    }
-
-    button[type="submit"] {
-      padding: 12px 28px;
-      font-size: 14px;
-      cursor: pointer;
-      background: #7cb342;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    button[type="submit"]:hover {
-      background: #689f38;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(124, 179, 66, 0.3);
-    }
-
-    .clear-link {
-      align-self: center;
-      color: #7cb342;
-      text-decoration: none;
-      font-weight: 600;
-      padding: 8px 16px;
-      transition: color 0.3s;
-    }
-
-    .clear-link:hover {
-      color: #689f38;
-    }
-
-    .meta {
-      margin: 0 0 24px;
-      color: #e8f5e9;
-      font-size: 15px;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 8px;
-      border-left: 4px solid #ffd54f;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .meta strong {
-      color: #ffd54f;
-    }
-
-    .results-grid {
-      display: grid;
-      gap: 20px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(124, 179, 66, 0.3);
-      border-radius: 12px;
-      padding: 24px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      bottom: -30px;
-      left: -30px;
-      width: 120px;
-      height: 120px;
-      background: url('/static/images/agil-baroto-sutji-GrqWxipnqmw-unsplash.png') no-repeat center;
-      background-size: contain;
-      opacity: 0.05;
-      transform: rotate(-15deg);
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .card:hover::before {
-      opacity: 0.08;
-    }
-
-    .card:hover {
-      border-color: #ffd54f;
-      box-shadow: 0 8px 24px rgba(255, 213, 79, 0.3), 0 0 20px rgba(124, 179, 66, 0.2);
-      transform: translateY(-4px);
-    }
-
-    .title {
-      font-weight: 700;
-      font-size: 20px;
-      margin-bottom: 12px;
-      color: #4a7c59;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .row {
-      color: #555;
-      margin: 8px 0;
-      font-size: 15px;
-    }
-
-    .row strong {
-      color: #4a7c59;
-    }
-
-    .small {
-      color: #666;
-      font-size: 14px;
-      margin-top: 12px;
-      line-height: 1.6;
-    }
-
-    .pill {
-      display: inline-block;
-      background: #ffd54f;
-      color: #4a7c59;
-      border-radius: 999px;
-      padding: 4px 12px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .no-results {
-      text-align: center;
-      padding: 60px 20px;
-      color: #e8f5e9;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    .no-results-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      margin-top: 32px;
-      flex-wrap: wrap;
-    }
-
-    .page-btn {
-      padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(124, 179, 66, 0.3);
-      border-radius: 8px;
-      color: #4a7c59;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      min-width: 44px;
-      text-align: center;
-    }
-
-    .page-btn:hover {
-      border-color: #ffd54f;
-      background: rgba(255, 213, 79, 0.2);
-      transform: translateY(-2px);
-    }
-
-    .page-btn.active {
-      background: #7cb342;
-      color: white;
-      border-color: #7cb342;
-      cursor: default;
-    }
-
-    .page-btn.active:hover {
-      transform: none;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/index.css" />
 </head>
 
 <body>
@@ -433,80 +19,112 @@
         <img src="/static/images/dandoori-logo.png" alt="School of Dandoori" class="logo" />
         <div class="brand-name">School of Dandoori</div>
       </div>
-      <a href="/chatbot" class="chat-btn">
-        💬 Chat with Assistant
-      </a>
+      <div class="nav-links">
+        <a href="/courses" class="nav-link">Browse Courses</a>
+        <a href="/profile" class="nav-link">👤 My Profile</a>
+        <a href="/chatbot" class="chat-btn">💬 Chat with Assistant</a>
+      </div>
     </div>
   </div>
 
   <div class="container">
-    <div class="search-section">
-      <h2 class="search-title">🔍 Find Your Perfect Course</h2>
-
-  <form method="get" action="/">
-    <label>
-      Search
-      <input name="q" type="text" placeholder="title, skills, description..." value="{{ q }}" />
-    </label>
-
-    <label>
-      Location
-      <select name="location">
-        <option value="ALL" {% if location=="ALL" %}selected{% endif %}>All</option>
-        {% for loc in locations %}
-        <option value="{{ loc }}" {% if location==loc %}selected{% endif %}>{{ loc }}</option>
-        {% endfor %}
-      </select>
-    </label>
-
-    <label>
-      Max cost
-      <input name="max_cost" type="text" placeholder="e.g. 200" value="{{ max_cost }}" />
-    </label>
-
-    <button type="submit">Search</button>
-    <a href="/" class="clear-link">Clear</a>
-  </form>
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">Welcome to the School of Dandori</h1>
+        <h2 class="hero-subtitle">Reclaim Your Time. Rediscover Your Joy.</h2>
+        <p class="hero-text">
+          In a world increasingly dominated by machine intelligence and constant digital noise, the School of Dandori 
+          offers a sanctuary for the human spirit. Founded in 2017 by technologists Ada Calm and Tessa Forman, our 
+          school was born from a simple but powerful belief: as machines master our attention, humans must work to 
+          reclaim it.
+        </p>
+        <a href="/courses" class="adventure-btn">Start Your Adventure</a>
+      </div>
     </div>
 
-  <div class="meta">
-    Showing <strong>{{ total }}</strong> result{% if total != 1 %}s{% endif %}
-    {% if total_pages > 1 %}(Page {{ page }} of {{ total_pages }}){% endif %}
-  </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3 class="info-card-title">🌙 What is Dandori?</h3>
+        <p class="info-card-text">
+          Dandori is the art of managing resources efficiently to maximize output. At our school, we believe your 
+          most precious resources are your time and your wellbeing.
+        </p>
+        <p class="info-card-text">
+          Our philosophy is centered on the idea that life should be enjoyed. We encourage you to:
+        </p>
+        <ul class="info-list">
+          <li>Reconnect with your younger, more carefree self</li>
+          <li>Disconnect from the relentless stresses of modern life</li>
+          <li>Embrace your most playful nature through the "whimsy" of our curriculum</li>
+        </ul>
+        <p class="info-card-text" style="margin-top: 20px;">
+          In today's fast-paced world, we often forget to pause and enjoy the simple pleasures. At Dandori, we create 
+          spaces where adults can rediscover the joy of learning without pressure, deadlines, or expectations. Each 
+          class is an invitation to slow down, be present, and reconnect with what truly matters.
+        </p>
+      </div>
 
-  {% if results|length == 0 %}
-  <div class="no-results">
-    <div class="no-results-icon">🔍</div>
-    <p>No matches found. Try a different search.</p>
-  </div>
-  {% endif %}
+      <div class="info-card">
+        <h3 class="info-card-title">🎨 Our Classes</h3>
+        <p class="info-card-text">
+          Exclusively for adults, we offer a delightful range of evening and weekend classes across the United Kingdom. 
+          Whether you are looking to learn a new skill or simply find a moment of peace, our courses are designed to 
+          look after your holistic self.
+        </p>
+        <ul class="info-list">
+          <li><strong>Whimsical Topics:</strong> From art to unique lifestyle skills, our courses are curated to bring joy</li>
+          <li><strong>Expert Instructors:</strong> We partner with hundreds of passionate freelance instructors</li>
+          <li><strong>Community Focused:</strong> Courses advertised locally to build neighborhood connections</li>
+        </ul>
+        <p class="info-card-text" style="margin-top: 20px;">
+          Our diverse curriculum spans culinary arts, nature crafts, traditional skills, creative expression, and so much more. 
+          Every course is carefully selected to ensure it brings a sense of wonder and accomplishment. We believe learning 
+          should be an adventure, not a chore, and our instructors are dedicated to making every session memorable.
+        </p>
+      </div>
 
-  <div class="results-grid">
-  {% for r in results %}
-  <div class="card">
-    <div class="title">
-      {{ r.get("title", "Untitled") }}
-      {% if r.get("class_ID") %}
-      <span class="pill">ID: {{ r.get("class_ID") }}</span>
-      {% endif %}
+      <div class="info-card">
+        <h3 class="info-card-title">🌿 Our Ethos</h3>
+        <p class="info-card-text">
+          At the School of Dandori, we believe that true wellbeing comes from balance, creativity, and human connection. 
+          In an age where technology often isolates us, we create spaces that bring people together.
+        </p>
+        <ul class="info-list">
+          <li><strong>Mindful Learning:</strong> Every class is designed to be a meditative escape from daily pressures</li>
+          <li><strong>Playful Spirit:</strong> We celebrate curiosity, experimentation, and the joy of trying something new</li>
+          <li><strong>Authentic Connection:</strong> Building genuine relationships within your local community</li>
+        </ul>
+        <p class="info-card-text" style="margin-top: 20px;">
+          We're not just teaching skills—we're nurturing a movement toward more intentional, joyful living. Every course 
+          is an opportunity to step away from screens, to work with your hands, to laugh with others, and to remember 
+          what it feels like to be fully present in the moment.
+        </p>
+      </div>
+
+      <div class="info-card full-width">
+        <h3 class="info-card-title">👥 Meet the Team</h3>
+        <p class="info-card-text">
+          The School of Dandori is run by a dedicated team of three who are passionate about bringing "good Dandori" to everyone.
+        </p>
+        <div class="team-grid">
+          <div class="team-member">
+            <h4 class="team-name">Ada Calm</h4>
+            <p class="team-role">Co-Founder</p>
+            <p class="team-focus">Day-to-day operations and financial management</p>
+          </div>
+          <div class="team-member">
+            <h4 class="team-name">Tessa Forman</h4>
+            <p class="team-role">Co-Founder</p>
+            <p class="team-focus">Go-to-market strategy and local community advertising</p>
+          </div>
+          <div class="team-member">
+            <h4 class="team-name">Arthur Ingham</h4>
+            <p class="team-role">Tech Lead</p>
+            <p class="team-focus">Managing the platform that connects instructors and students</p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="row"><strong>Instructor:</strong> {{ r.get("instructor", "") }}</div>
-    <div class="row"><strong>Location:</strong> {{ r.get("location", "") }}</div>
-    <div class="row"><strong>Cost:</strong> £{{ r.get("cost", "") }}</div>
-
-    {% if r.get("skills_developed") %}
-    <div class="small"><strong>Skills:</strong> {{ r.get("skills_developed") }}</div>
-    {% endif %}
-
-    {% if r.get("learning_objectives") %}
-    <div class="small"><strong>Learning Objectives:</strong> {{ r.get("learning_objectives") }}</div>
-    {% endif %}
-
-
-    {% if r.get("description") %}
-    <div class="small"><strong>Description:</strong> {{ r.get("description") }}</div>
-    {% endif %}
   </div>
   {% endfor %}
   </div>
