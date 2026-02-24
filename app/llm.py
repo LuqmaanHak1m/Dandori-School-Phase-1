@@ -149,7 +149,12 @@ def call_database(
     if max_cost is not None:
         filters.append({"cost": {"$lte": float(max_cost)}})
 
-    where = {"$and": filters} if filters else None
+    if len(filters) == 0:
+        where = None
+    elif len(filters) == 1:
+        where = filters[0]
+    else:
+        where = {"$and": filters}
 
     results = collection.query(
         query_texts=[query_text],
@@ -171,6 +176,6 @@ def call_database(
 if __name__ == "__main__":
     load_collection()
 
-    user_query = "What courses are there close to Bristol that have arts and crafts?"
+    user_query = "What courses are there around 60 pounds?"
 
     print(call_LLM(user_query))
