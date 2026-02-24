@@ -8,7 +8,6 @@ import requests
 import json
 
 from utils.rag import embed_data
-from .queries.courses import query_courses 
 
 from dotenv import load_dotenv
 load_dotenv()
