@@ -155,7 +155,12 @@ def call_database(
     if max_cost is not None:
         filters.append({"cost": {"$lte": float(max_cost)}})
 
-    where = {"$and": filters} if filters else None
+    if len(filters) == 0:
+        where = None
+    elif len(filters) == 1:
+        where = filters[0]
+    else:
+        where = {"$and": filters}
 
     results = collection.query(
         query_texts=[query_text],
