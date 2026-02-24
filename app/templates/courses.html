@@ -72,12 +72,14 @@
   <div class="results-grid">
   {% for r in results %}
   <div class="card">
-    <div class="title">
-      {{ r.get("title", "Untitled") }}
-      {% if r.get("class_ID") %}
-      <span class="pill">ID: {{ r.get("class_ID") }}</span>
-      {% endif %}
-    </div>
+    <a href="/course/{{ r.get('class_ID', 'unknown') }}" class="title-link">
+      <div class="title">
+        {{ r.get("title", "Untitled") }}
+        {% if r.get("class_ID") %}
+        <span class="pill">ID: {{ r.get("class_ID") }}</span>
+        {% endif %}
+      </div>
+    </a>
 
     <div class="row"><strong>Instructor:</strong> <a href="/instructor/{{ r.get('instructor', '').replace(' ', '-').lower() }}" class="instructor-link">{{ r.get("instructor", "") }}</a></div>
     <div class="row"><strong>Location:</strong> {{ r.get("location", "") }}</div>

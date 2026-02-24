@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from ..queries.courses import get_locations, query_courses
-from ..queries.llm import call_LLM
+from ..queries.courses import get_locations, query_courses, get_course_by_id
 
 bp = Blueprint("main", __name__)
 
@@ -110,6 +109,89 @@ def profile():
     
     return render_template("profile.html", **user_data)
 
+@bp.get("/course/<course_id>")
+def course_detail(course_id):
+    """
+    Display detailed course information.
+    Fetches data from database and supplements with mock data for fields not yet in DB.
+    """
+    # Get course from database
+    db_course = get_course_by_id(course_id)
+    
+    if not db_course:
+        # If course not found, you could create a 404 page or redirect
+        return f"Course {course_id} not found", 404
+    
+    # Map database fields to template fields
+    # Fields from database: title, class_ID, instructor, location, cost, 
+    #                       learning_objectives, skills_developed, description, provided_materials
+    
+    course_data = {
+        # === FROM DATABASE ===
+        "title": db_course.get("title", "Untitled Course"),
+        "class_id": db_course.get("class_ID"),
+        "instructor": db_course.get("instructor", "Unknown Instructor"),
+        "location": db_course.get("location", "TBA"),
+        "cost": str(db_course.get("cost", "0")),
+        
+        # === DERIVED FROM DATABASE ===
+        "instructor_slug": db_course.get("instructor", "").replace(" ", "-").lower(),
+        
+        # Short description from first 200 chars of description
+        "short_description": (db_course.get("description") or "")[:200] + "..." if db_course.get("description") and len(db_course.get("description", "")) > 200 else db_course.get("description", "Discover something new in this engaging course."),
+        
+        # Full description from database
+        "full_description": db_course.get("description", "Join us for an enriching learning experience where you'll gain new skills and connect with fellow learners."),
+        
+        # Parse learning objectives (comma-separated in DB) into list
+        "what_you_will_learn": [
+            obj.strip() 
+            for obj in (db_course.get("learning_objectives") or "").split(",") 
+            if obj.strip()
+        ] or ["Gain new skills and knowledge", "Connect with fellow learners", "Enjoy a creative experience"],
+        
+        # Parse provided materials (comma-separated in DB) into list
+        "includes": [
+            item.strip() 
+            for item in (db_course.get("provided_materials") or "").split(",") 
+            if item.strip()
+        ] or ["All necessary materials", "Expert instruction", "Take-home resources"],
+        
+        # === MOCK DATA (Add these columns to your database later) ===
+        "duration": "6 hours",  # TODO: Add 'duration' column to courses table
+        "date": "TBA",  # TODO: Add 'date' column to courses table
+        "time": "TBA",  # TODO: Add 'time' column to courses table
+        "spots_available": 8,  # TODO: Add 'spots_available' column to courses table
+        "total_spots": 12,  # TODO: Add 'total_spots' column to courses table
+        "difficulty": "All Levels",  # TODO: Add 'difficulty' column to courses table
+        "image": "public-domain-vectors-RaemOoVqzLA-unsplash.png",  # TODO: Add 'image' column
+        
+        "what_to_bring": [
+            "Comfortable clothing",
+            "A notebook and pen",
+            "An open mind and enthusiasm"
+        ],
+        
+        "schedule": [
+            {"time": "10:00 AM", "activity": "Welcome & Introduction"},
+            {"time": "11:00 AM", "activity": "Main Learning Session"},
+            {"time": "12:30 PM", "activity": "Lunch Break"},
+            {"time": "1:30 PM", "activity": "Hands-on Practice"},
+            {"time": "3:00 PM", "activity": "Q&A and Wrap-up"}
+        ],
+        
+        "reviews": [
+            {
+                "student": "Anonymous Student",
+                "rating": "⭐⭐⭐⭐⭐",
+                "date": "Recent",
+                "review": "Great course! Highly recommend."
+            }
+        ]
+    }
+    
+    return render_template("course_detail.html", course=course_data)
+
 @bp.get("/instructor/<instructor_name>")
 def instructor_profile(instructor_name):
     # For now, all instructors show Ian Structore's profile
@@ -178,7 +260,5 @@ def instructor_profile(instructor_name):
 def chatbot_message():
     data = request.get_json()
     user_message = data.get("message", "")
-
-    response = call_LLM(user_message)
     
-    return jsonify({"response": response})
+    return jsonify({"response": "It's coming"})
