@@ -263,3 +263,14 @@ button[type="submit"]:hover {
   color: #689f38;
   border-bottom-color: #ffd54f;
 }
+
+
+.title-link {
+  text-decoration: none;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.title-link:hover .title {
+  color: #689f38;
+}

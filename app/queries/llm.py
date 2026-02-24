@@ -7,6 +7,9 @@ from openai import OpenAI
 import requests
 import json
 
+import markdown
+import bleach
+
 from utils.rag import embed_data
 
 from dotenv import load_dotenv
@@ -19,7 +22,7 @@ chat_client = OpenAI(api_key=api_key,
                     base_url=endpoint)
 
 
-ALLOWED_LOCATIONS = ALLOWED_LOCATIONS = [
+ALLOWED_LOCATIONS = [
     "Bath",
     "Brighton",
     "Cambridge",
@@ -52,7 +55,7 @@ tools = [
         "function": {
             "name": "query_courses",
             "description": (
-                "Search courses in the database with optional keyword, location, and maximum cost filters. "
+                "Search courses in the database with optional keyword, multiple locations, and maximum cost filters. "
                 "Returns a list of courses with title, description, location, and cost."
             ),
             "parameters": {
@@ -62,10 +65,10 @@ tools = [
                         "type": "string",
                         "description": "Keyword or topic to search for (e.g., 'baking', 'calligraphy')"
                     },
-                    "location": {
-                        "type": "string",
-                        "description": "City or region to filter by (e.g., 'Norfolk', 'London')",
-                        "enum": ALLOWED_LOCATIONS,
+                    "locations": {
+                        "type": "array",
+                        "description": "List of cities or regions to filter by (e.g., ['Norfolk', 'London'])",
+                        "items": {"type": "string", "enum": ALLOWED_LOCATIONS}
                     },
                     "max_cost": {
                         "type": "string",
@@ -101,10 +104,11 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
                  adult-only wellbeing school. Your role is to inform users about upcoming courses, 
                  classes and events. Communicate clearly, calmly and warmly. 
                  Add a light touch of whimsy when appropriate but prioritise accuracy and clarity.
-                  Do not give advice, coaching or wellbeing guidance beyond what is described in the course details. 
+                 Do not give advice, coaching or wellbeing guidance beyond what is described in the course details. 
                  Present dates, times, locations and descriptions reliably. 
                  If information is missing or uncertain, say so plainly.You are welcoming and gentle but primarily informational.
-                 Return your response in a text from, not markdown.
+                 Return your response in a easy to read format
+                 You are allowed only one tool call.
                  """},
                 {"role": "user", "content": query}
             ]
@@ -126,15 +130,15 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
         # If there is a tool call then extract it
         # and call the database
         if message.tool_calls:
+            message.tool_calls = [message.tool_calls[0]]
+
             tool_call = message.tool_calls[0]
             args = json.loads(tool_call.function.arguments)
-
-            print(tool_call)
 
             tool_result = call_database(
                 collection,
                 q=args.get("q"),
-                location=args.get("location"),
+                locations=args.get("locations"),
                 max_cost=args.get("max_cost"),
                 top_n=args.get("top_n", 5)
             )
@@ -158,7 +162,13 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
             messages=messages
         )
 
-        return final_response.choices[0].message.content
+        llm_output = final_response.choices[0].message.content
+
+        html_output = markdown.markdown(llm_output)
+
+        safe_html = bleach.clean(html_output, tags=['p','ul','li','strong','em','b','i'], strip=True)
+
+        return safe_html
 
     else:
         return "No query was received"
@@ -167,23 +177,25 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
 def call_database(
     collection,
     q: str | None,
-    location: str | None = None,
+    locations: list[str] | None = None,
     max_cost: float | None = None,
     top_n: int = 5
 ) -> list[dict]:
-    
-    # If query is None then make it "courses"
-    # otherwise it won't work
+
+    # Default query text
     query_text = q.strip() if q and q.strip() else "courses"
 
     filters = []
 
-    if location and location.upper() != "ALL":
-        filters.append({"location": location})
+    # Handle multiple locations
+    if locations:
+        filters.append({"location": {"$in": [loc for loc in locations if loc.strip()]}})
 
+    # Handle max cost
     if max_cost is not None:
         filters.append({"cost": {"$lte": float(max_cost)}})
 
+    # Construct the where clause
     if len(filters) == 0:
         where = None
     elif len(filters) == 1:
@@ -191,6 +203,7 @@ def call_database(
     else:
         where = {"$and": filters}
 
+    # Query the collection
     results = collection.query(
         query_texts=[query_text],
         n_results=top_n,
@@ -198,7 +211,7 @@ def call_database(
         include=["documents", "metadatas"]
     )
 
-    # return documents and metadatas zipped together
+    # Return documents with their metadata
     return [
         {"text": doc, "metadata": meta}
         for doc, meta in zip(

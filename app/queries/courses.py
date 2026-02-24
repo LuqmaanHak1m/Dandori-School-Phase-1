@@ -85,3 +85,26 @@ def query_courses(q: str, location: str, max_cost: str) -> list[dict]:
         results.append(d)
 
     return results
+
+
+def get_course_by_id(class_id: str) -> dict | None:
+    """Get a single course by its class_id"""
+    sql = f"""
+    {BASE_SELECT}
+    WHERE class_id = :class_id
+    LIMIT 1;
+    """
+    
+    rows = run_sql(sql, {"class_id": class_id})
+    
+    if not rows:
+        return None
+    
+    r = rows[0]
+    d = dict(r)
+    d["class_ID"] = d.pop("class_id", None)
+    d["description"] = d.pop("course_description", None)
+    if d.get("cost") is not None:
+        d["cost"] = float(d["cost"])
+    
+    return d

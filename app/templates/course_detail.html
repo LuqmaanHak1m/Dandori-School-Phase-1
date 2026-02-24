@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ course.title }} - School of Dandori</title>
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/course_detail.css" />
+</head>
+
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="/static/images/dandoori-logo.png" alt="School of Dandori" class="logo" />
+        <div class="brand-name">School of Dandori</div>
+      </div>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/courses" class="nav-link">← Back to Courses</a>
+        <a href="/profile" class="nav-link">👤 My Profile</a>
+        <a href="/chatbot" class="nav-link">💬 Chat</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="course-hero">
+      <div class="course-hero-image">
+        <img src="/static/images/{{ course.image }}" alt="{{ course.title }}" />
+        <div class="course-badge">{{ course.difficulty }}</div>
+      </div>
+      <div class="course-hero-content">
+        <h1 class="course-title-large">{{ course.title }}</h1>
+        <p class="course-subtitle">{{ course.short_description }}</p>
+        
+        <div class="course-meta-grid">
+          <div class="meta-item">
+            <span class="meta-icon">👨‍🏫</span>
+            <div>
+              <div class="meta-label">Instructor</div>
+              <a href="/instructor/{{ course.instructor_slug }}" class="meta-value-link">{{ course.instructor }}</a>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-icon">📍</span>
+            <div>
+              <div class="meta-label">Location</div>
+              <div class="meta-value">{{ course.location }}</div>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-icon">📅</span>
+            <div>
+              <div class="meta-label">Date</div>
+              <div class="meta-value">{{ course.date }}</div>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-icon">🕐</span>
+            <div>
+              <div class="meta-label">Time</div>
+              <div class="meta-value">{{ course.time }}</div>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-icon">⏱️</span>
+            <div>
+              <div class="meta-label">Duration</div>
+              <div class="meta-value">{{ course.duration }}</div>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="meta-icon">💷</span>
+            <div>
+              <div class="meta-label">Cost</div>
+              <div class="meta-value">£{{ course.cost }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="availability-bar">
+          <div class="availability-text">
+            <span class="spots-left">{{ course.spots_available }} spots left</span>
+            <span class="spots-total">of {{ course.total_spots }}</span>
+          </div>
+          <div class="availability-progress">
+            {% set fill_percentage = ((course.total_spots - course.spots_available) / course.total_spots * 100) | int %}
+            <div class="availability-fill" style="width: {{ fill_percentage }}%"></div>
+          </div>
+        </div>
+
+        <button class="enroll-btn">Enroll Now</button>
+      </div>
+    </div>
+
+    <div class="content-layout">
+      <div class="main-content">
+        <div class="section">
+          <h2 class="section-title">📖 About This Course</h2>
+          <p class="description-text">{{ course.full_description }}</p>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">🎯 What You'll Learn</h2>
+          <ul class="learning-list">
+            {% for item in course.what_you_will_learn %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">📅 Course Schedule</h2>
+          <div class="schedule-timeline">
+            {% for item in course.schedule %}
+            <div class="schedule-item">
+              <div class="schedule-time">{{ item.time }}</div>
+              <div class="schedule-activity">{{ item.activity }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">⭐ Student Reviews</h2>
+          {% for review in course.reviews %}
+          <div class="review-card">
+            <div class="review-header">
+              <div>
+                <div class="review-student">{{ review.student }}</div>
+                <div class="review-date">{{ review.date }}</div>
+              </div>
+              <div class="review-rating">{{ review.rating }}</div>
+            </div>
+            <p class="review-text">{{ review.review }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="section sticky-section">
+          <h3 class="section-title">🎒 What to Bring</h3>
+          <ul class="checklist">
+            {% for item in course.what_to_bring %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title">✨ What's Included</h3>
+          <ul class="checklist included">
+            {% for item in course.includes %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="section cta-section">
+          <h3 class="cta-title">Ready to Begin?</h3>
+          <p class="cta-text">Join us for this magical experience</p>
+          <button class="enroll-btn-secondary">Enroll Now</button>
+          <a href="/courses" class="browse-link">← Browse More Courses</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <img src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png" alt="" class="decorative-leaf-1" />
+  <img src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png" alt="" class="decorative-leaf-2" />
+
+</body>
+
+</html>

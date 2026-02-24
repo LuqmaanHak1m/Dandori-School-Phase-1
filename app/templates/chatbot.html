@@ -2,6 +2,36 @@
 {% block title %}School of Dandoori - Course Assistant{% endblock %}
 {% block stylesheet %} <link rel="stylesheet" href="/static/css/chatbot.css" />{% endblock %}
 {% block content %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>School of Dandoori - Course Assistant</title>
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/chatbot.css" />
+</head>
+
+<body>
+  <img src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png" alt="" class="decorative-leaf-1" />
+  <img src="/static/images/public-domain-vectors-RaemOoVqzLA-unsplash.png" alt="" class="decorative-leaf-2" />
+  <img src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png" alt="" class="decorative-leaf-3" />
+
+  <div class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="/static/images/dandoori-logo.png" alt="School of Dandoori" class="logo" />
+        <div class="brand-name">School of Dandoori</div>
+      </div>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/courses" class="nav-link">Browse Courses</a>
+        <a href="/profile" class="nav-link">👤 My Profile</a>
+      </div>
+    </div>
+  </div>
+
   <div class="chat-container">
     <div class="chat-box">
       <div class="chat-header">
@@ -13,20 +43,15 @@
         <div class="welcome-message">
           <div class="welcome-icon">🌱</div>
           <h2>Welcome to Dandoori!</h2>
-          <p>I'm your course assistant. Ask me about courses, instructors, locations, or skills you'd like to learn. Let's find the perfect learning journey for you!</p>
+          <p>I'm your course assistant. Ask me about courses, instructors, locations, or skills you'd like to learn.
+            Let's find the perfect learning journey for you!</p>
         </div>
       </div>
 
       <div class="chat-input-container">
         <form class="chat-input-form" id="chatForm">
-          <input 
-            type="text" 
-            class="chat-input" 
-            id="messageInput" 
-            placeholder="Ask me about courses..." 
-            autocomplete="off"
-            required
-          />
+          <input type="text" class="chat-input" id="messageInput" placeholder="Ask me about courses..."
+            autocomplete="off" required />
           <button type="submit" class="send-btn" id="sendBtn">Send</button>
         </form>
       </div>
@@ -47,19 +72,19 @@
 
       const messageDiv = document.createElement('div');
       messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-      
+
       const avatar = document.createElement('div');
       avatar.className = 'message-avatar';
       avatar.textContent = isUser ? '👤' : '🌙';
-      
+
       const content = document.createElement('div');
       content.className = 'message-content';
-      content.textContent = text;
-      
+      content.innerHTML = text;
+
       messageDiv.appendChild(avatar);
       messageDiv.appendChild(content);
       chatMessages.appendChild(messageDiv);
-      
+
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
@@ -67,15 +92,15 @@
       const indicator = document.createElement('div');
       indicator.className = 'message bot';
       indicator.id = 'typingIndicator';
-      
+
       const avatar = document.createElement('div');
       avatar.className = 'message-avatar';
       avatar.textContent = '🌙';
-      
+
       const typing = document.createElement('div');
       typing.className = 'typing-indicator active';
       typing.innerHTML = '<span></span><span></span><span></span>';
-      
+
       indicator.appendChild(avatar);
       indicator.appendChild(typing);
       chatMessages.appendChild(indicator);
@@ -91,16 +116,16 @@
 
     chatForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const message = messageInput.value.trim();
       if (!message) return;
-      
+
       addMessage(message, true);
       messageInput.value = '';
       sendBtn.disabled = true;
-      
+
       showTypingIndicator();
-      
+
       try {
         const response = await fetch('/chatbot/message', {
           method: 'POST',
@@ -109,10 +134,10 @@
           },
           body: JSON.stringify({ message: message })
         });
-        
+
         const data = await response.json();
         hideTypingIndicator();
-        
+
         if (data.response) {
           addMessage(data.response);
         } else {
@@ -122,7 +147,7 @@
         hideTypingIndicator();
         addMessage('Sorry, I couldn\'t connect to the server. Please try again.');
       }
-      
+
       sendBtn.disabled = false;
       messageInput.focus();
     });
@@ -130,3 +155,7 @@
     messageInput.focus();
   </script>
 {% endblock %}
+
+</body>
+
+</html>

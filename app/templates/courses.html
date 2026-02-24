@@ -69,6 +69,16 @@
         <span class="pill">ID: {{ r.get("class_ID") }}</span>
         {% endif %}
       </div>
+  {% for r in results %}
+  <div class="card">
+    <a href="/course/{{ r.get('class_ID', 'unknown') }}" class="title-link">
+      <div class="title">
+        {{ r.get("title", "Untitled") }}
+        {% if r.get("class_ID") %}
+        <span class="pill">ID: {{ r.get("class_ID") }}</span>
+        {% endif %}
+      </div>
+    </a>
 
       <div class="row">
         <strong>Instructor:</strong>
