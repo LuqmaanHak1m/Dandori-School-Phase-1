@@ -171,6 +171,6 @@ def call_database(
 if __name__ == "__main__":
     load_collection()
 
-    user_query = "What courses are there for under £75 in Norfolk?"
+    user_query = "What courses are there close to Bristol that have arts and crafts?"
 
-    print(call_LLM(user_query, 5))
+    print(call_LLM(user_query))
