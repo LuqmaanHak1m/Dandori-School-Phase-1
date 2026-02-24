@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Schoold of Dandoori{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    {% block stylesheet %}{% endblock %}
+  </head>
+  <body>
+    <img
+      src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png"
+      alt=""
+      class="decorative-leaf-1"
+    />
+    <img
+      src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png"
+      alt=""
+      class="decorative-leaf-2"
+    />
+
+    <div class="header">
+      <div class="header-content">
+        <div class="logo-section">
+          <img
+            src="/static/images/dandoori-logo.png"
+            alt="School of Dandoori"
+            class="logo"
+          />
+          <div class="brand-name">School of Dandoori</div>
+        </div>
+        <div class="nav-links">
+          <a href="/" class="nav-link{% if nav_page == 'home' %} active_page{% endif %}">← Home</a>
+          <a href="/courses" class="nav-link{% if nav_page == 'courses' %} active_page{% endif %}">Browse Courses</a>
+          <a href="/profile" class="nav-link{% if nav_page == 'profile' %} active_page{% endif %}">👤 My Profile</a>
+          <a href="/chatbot" class="nav-link{% if nav_page == 'chatbot' %} active_page{% endif %}">💬 Chat with Assistant</a>
+        </div>
+      </div>
+    </div>
+
+    {% block content %}{% endblock %}
+  </body>
+</html>

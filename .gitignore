@@ -5,4 +5,4 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-        
+        app/queries/__pycache__/courses.cpython-312.pyc

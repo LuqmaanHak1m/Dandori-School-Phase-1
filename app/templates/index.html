@@ -1,32 +1,8 @@
-<!doctype html>
-<html lang="en">
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>School of Dandoori - Course Search</title>
-  <link rel="stylesheet" href="/static/css/base.css" />
-  <link rel="stylesheet" href="/static/css/index.css" />
-</head>
-
-<body>
-  <img src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png" alt="" class="decorative-leaf-1" />
-  <img src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png" alt="" class="decorative-leaf-2" />
-  
-  <div class="header">
-    <div class="header-content">
-      <div class="logo-section">
-        <img src="/static/images/dandoori-logo.png" alt="School of Dandoori" class="logo" />
-        <div class="brand-name">School of Dandoori</div>
-      </div>
-      <div class="nav-links">
-        <a href="/courses" class="nav-link">Browse Courses</a>
-        <a href="/profile" class="nav-link">👤 My Profile</a>
-        <a href="/chatbot" class="chat-btn">💬 Chat with Assistant</a>
-      </div>
-    </div>
-  </div>
-
+{% extends "base.html" %}
+{% block title%}School of Dandoori{% endblock %}
+{% block stylesheet %}   <link rel="stylesheet" href="/static/css/index.css" />{% endblock %}
+{% block content %}
   <div class="container">
     <div class="hero-section">
       <div class="hero-content">
@@ -127,6 +103,7 @@
     </div>
   </div>
 
+{% endblock %}
   <img src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png" alt="" class="decorative-leaf-1" />
   <img src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png" alt="" class="decorative-leaf-2" />
 

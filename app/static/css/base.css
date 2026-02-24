@@ -175,7 +175,7 @@ body::after {
   transform: translateY(-2px);
 }
 
-.chat-btn {
+.active_page{
   background: #ffd54f;
   color: #4a7c59;
   border: none;
