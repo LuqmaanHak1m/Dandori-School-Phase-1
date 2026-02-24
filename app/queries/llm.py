@@ -75,6 +75,7 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
                   Do not give advice, coaching or wellbeing guidance beyond what is described in the course details. 
                  Present dates, times, locations and descriptions reliably. 
                  If information is missing or uncertain, say so plainly.You are welcoming and gentle but primarily informational.
+                 Return your response in a text from, not markdown.
                  """},
                 {"role": "user", "content": query}
             ]
