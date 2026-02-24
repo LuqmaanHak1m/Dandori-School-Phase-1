@@ -6,6 +6,7 @@ import os
 from openai import OpenAI
 import requests
 import json
+import re
 
 import markdown
 import bleach
@@ -82,6 +83,26 @@ tools = [
 ]
 
 
+def inject_course_links(text, valid_course_ids):
+    print("Hello")
+    print(text)
+    print("\n\n\n")
+    def repl(match):
+        raw_title = match.group(1)   # "**Laughter Yoga and Symphony of Silliness"
+        cid = match.group(2)
+
+        if cid not in valid_course_ids:
+            return match.group(0)
+
+        title = raw_title.strip('*')
+
+        print(f"✅ Linking course {cid}: {title}")
+
+        return f'**<a href="/course/{cid}">{title}</a>**'
+
+    pattern = r'(\*\*[^*]+?)\s*\(course_id:\s*([a-zA-Z0-9_]+)\):?\*\*'
+    return re.sub(pattern, repl, text)
+
 def load_collection():   
 
     client = chromadb.PersistentClient(path="../chroma_db")
@@ -89,6 +110,7 @@ def load_collection():
     collection = client.get_or_create_collection("courses")
 
     if collection.count() < 1:
+        print("Embedding")
         embed_collection = embed_data(collection)
         return embed_collection
     else:
@@ -109,10 +131,11 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
                  If information is missing or uncertain, say so plainly.You are welcoming and gentle but primarily informational.
                  Return your response in a easy to read format
                  You are allowed only one tool call.
+                 When referring to a course, include its course_id in parentheses like this * **Enchanted Tart Taming (course_id: 6862):**
+                 Do NOT create HTML links.
                  """},
                 {"role": "user", "content": query}
             ]
-
 
     if query != "":
         # Get a response from the client
@@ -126,6 +149,7 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
         )
 
         message = response.choices[0].message
+
 
         # If there is a tool call then extract it
         # and call the database
@@ -162,11 +186,20 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
             messages=messages
         )
 
+
         llm_output = final_response.choices[0].message.content
 
-        html_output = markdown.markdown(llm_output)
+        valid_course_ids = {
+            str(item["metadata"]["class_ID"])
+            for item in tool_result
+        }
 
-        safe_html = bleach.clean(html_output, tags=['p','ul','li','strong','em','b','i'], strip=True)
+        llm_output_links = inject_course_links(llm_output, valid_course_ids)
+
+        html_output = markdown.markdown(llm_output_links)
+
+        safe_html = bleach.clean(html_output, tags=['p','ul','li','strong','em','b','i', 'a'], strip=True)
+        print(f"last html : {safe_html}")
 
         return safe_html
 

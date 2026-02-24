@@ -43,6 +43,7 @@ def chunker(records:list[dict]):
                 "learning_objectives": row.get("learning_objectives"),
                 "provided_materials": row.get("provided_materials"),
                 "skills": row.get("skills_developed"),
+                "class_ID": row.get("class_ID")
             }
         }
 
@@ -73,6 +74,8 @@ if __name__ == "__main__":
     client = chromadb.Client()
     collection = client.get_or_create_collection("courses")
     collection = embed_data(collection)
+
+    
 
     print("Done")
     print(f"Collection: {collection}")

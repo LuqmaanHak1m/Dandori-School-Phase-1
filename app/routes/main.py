@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify
 from ..queries.courses import get_locations, query_courses, get_course_by_id
+from ..queries.llm import call_LLM
 
 bp = Blueprint("main", __name__)
 
@@ -264,5 +265,7 @@ def instructor_profile(instructor_name):
 def chatbot_message():
     data = request.get_json()
     user_message = data.get("message", "")
+
+    response = call_LLM(user_message)
     
-    return jsonify({"response": "It's coming"})
+    return jsonify({"response": response})
