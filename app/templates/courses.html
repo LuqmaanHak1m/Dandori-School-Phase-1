@@ -1,61 +1,53 @@
-<!doctype html>
-<html lang="en">
+{% extends "base.html" %} 
+{% block title %}{% endblock %} 
+{% block stylesheet %}<link rel="stylesheet" href="/static/css/courses.css"/>{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="search-section">
+    <h2 class="search-title">🔍 Find Your Perfect Course</h2>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Browse Courses - School of Dandori</title>
-  <link rel="stylesheet" href="/static/css/base.css" />
-  <link rel="stylesheet" href="/static/css/courses.css" />
-</head>
+    <form method="get" action="/courses">
+      <label>
+        Search
+        <input
+          name="q"
+          type="text"
+          placeholder="title, skills, description..."
+          value="{{ q }}"
+        />
+      </label>
 
-<body>
-  <img src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png" alt="" class="decorative-leaf-1" />
-  <img src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png" alt="" class="decorative-leaf-2" />
-  
-  <div class="header">
-    <div class="header-content">
-      <div class="logo-section">
-        <img src="/static/images/dandoori-logo.png" alt="School of Dandori" class="logo" />
-        <div class="brand-name">School of Dandori</div>
-      </div>
-      <div class="nav-links">
-        <a href="/" class="nav-link">← Home</a>
-        <a href="/profile" class="nav-link">👤 My Profile</a>
-        <a href="/chatbot" class="chat-btn">💬 Chat with Assistant</a>
-      </div>
-    </div>
+      <label>
+        Location
+        <select name="location">
+          <option value="ALL" {% if location=="ALL" %}selected{% endif %}>
+            All
+          </option>
+          {% for loc in locations %}
+          <option
+            value="{{ loc }}"
+            {% if location==loc %}selected{% endif %}
+          >
+            {{ loc }}
+          </option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label>
+        Max cost
+        <input
+          name="max_cost"
+          type="text"
+          placeholder="e.g. 200"
+          value="{{ max_cost }}"
+        />
+      </label>
+
+      <button type="submit">Search</button>
+      <a href="/courses" class="clear-link">Clear</a>
+    </form>
   </div>
-
-  <div class="container">
-    <div class="search-section">
-      <h2 class="search-title">🔍 Find Your Perfect Course</h2>
-
-  <form method="get" action="/courses">
-    <label>
-      Search
-      <input name="q" type="text" placeholder="title, skills, description..." value="{{ q }}" />
-    </label>
-
-    <label>
-      Location
-      <select name="location">
-        <option value="ALL" {% if location=="ALL" %}selected{% endif %}>All</option>
-        {% for loc in locations %}
-        <option value="{{ loc }}" {% if location==loc %}selected{% endif %}>{{ loc }}</option>
-        {% endfor %}
-      </select>
-    </label>
-
-    <label>
-      Max cost
-      <input name="max_cost" type="text" placeholder="e.g. 200" value="{{ max_cost }}" />
-    </label>
-
-    <button type="submit">Search</button>
-    <a href="/courses" class="clear-link">Clear</a>
-  </form>
-    </div>
 
   <div class="meta">
     Showing <strong>{{ total }}</strong> result{% if total != 1 %}s{% endif %}
@@ -70,58 +62,70 @@
   {% endif %}
 
   <div class="results-grid">
-  {% for r in results %}
-  <div class="card">
-    <div class="title">
-      {{ r.get("title", "Untitled") }}
-      {% if r.get("class_ID") %}
-      <span class="pill">ID: {{ r.get("class_ID") }}</span>
+    {% for r in results %}
+    <div class="card">
+      <div class="title">
+        {{ r.get("title", "Untitled") }} {% if r.get("class_ID") %}
+        <span class="pill">ID: {{ r.get("class_ID") }}</span>
+        {% endif %}
+      </div>
+
+      <div class="row">
+        <strong>Instructor:</strong>
+        <a
+          href="/instructor/{{ r.get('instructor', '').replace(' ', '-').lower() }}"
+          class="instructor-link"
+          >{{ r.get("instructor", "") }}</a
+        >
+      </div>
+      <div class="row">
+        <strong>Location:</strong> {{ r.get("location", "") }}
+      </div>
+      <div class="row"><strong>Cost:</strong> £{{ r.get("cost", "") }}</div>
+
+      {% if r.get("skills_developed") %}
+      <div class="small">
+        <strong>Skills:</strong> {{ r.get("skills_developed") }}
+      </div>
+      {% endif %} {% if r.get("learning_objectives") %}
+      <div class="small">
+        <strong>Learning Objectives:</strong> {{ r.get("learning_objectives") }}
+      </div>
+      {% endif %} {% if r.get("description") %}
+      <div class="small">
+        <strong>Description:</strong> {{ r.get("description") }}
+      </div>
       {% endif %}
     </div>
-
-    <div class="row"><strong>Instructor:</strong> <a href="/instructor/{{ r.get('instructor', '').replace(' ', '-').lower() }}" class="instructor-link">{{ r.get("instructor", "") }}</a></div>
-    <div class="row"><strong>Location:</strong> {{ r.get("location", "") }}</div>
-    <div class="row"><strong>Cost:</strong> £{{ r.get("cost", "") }}</div>
-
-    {% if r.get("skills_developed") %}
-    <div class="small"><strong>Skills:</strong> {{ r.get("skills_developed") }}</div>
-    {% endif %}
-
-    {% if r.get("learning_objectives") %}
-    <div class="small"><strong>Learning Objectives:</strong> {{ r.get("learning_objectives") }}</div>
-    {% endif %}
-
-
-    {% if r.get("description") %}
-    <div class="small"><strong>Description:</strong> {{ r.get("description") }}</div>
-    {% endif %}
-  </div>
-  {% endfor %}
+    {% endfor %}
   </div>
 
   {% if total_pages > 1 %}
   <div class="pagination">
     {% if page > 1 %}
-    <a href="?q={{ q }}&location={{ location }}&max_cost={{ max_cost }}&page={{ page - 1 }}" class="page-btn">← Previous</a>
-    {% endif %}
-    
-    {% for p in range(1, total_pages + 1) %}
-      {% if p == page %}
-        <span class="page-btn active">{{ p }}</span>
-      {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
-        <a href="?q={{ q }}&location={{ location }}&max_cost={{ max_cost }}&page={{ p }}" class="page-btn">{{ p }}</a>
-      {% elif p == page - 3 or p == page + 3 %}
-        <span class="page-btn">...</span>
-      {% endif %}
-    {% endfor %}
-    
-    {% if page < total_pages %}
-    <a href="?q={{ q }}&location={{ location }}&max_cost={{ max_cost }}&page={{ page + 1 }}" class="page-btn">Next →</a>
+    <a
+      href="?q={{ q }}&location={{ location }}&max_cost={{ max_cost }}&page={{ page - 1 }}"
+      class="page-btn"
+      >← Previous</a
+    >
+    {% endif %} {% for p in range(1, total_pages + 1) %} {% if p == page %}
+    <span class="page-btn active">{{ p }}</span>
+    {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
+    <a
+      href="?q={{ q }}&location={{ location }}&max_cost={{ max_cost }}&page={{ p }}"
+      class="page-btn"
+      >{{ p }}</a
+    >
+    {% elif p == page - 3 or p == page + 3 %}
+    <span class="page-btn">...</span>
+    {% endif %} {% endfor %} {% if page < total_pages %}
+    <a
+      href="?q={{ q }}&location={{ location }}&max_cost={{ max_cost }}&page={{ page + 1 }}"
+      class="page-btn"
+      >Next →</a
+    >
     {% endif %}
   </div>
   {% endif %}
-  </div>
-
-</body>
-
-</html>
+</div>
+{% endblock %}

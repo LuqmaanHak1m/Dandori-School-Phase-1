@@ -6,7 +6,10 @@ bp = Blueprint("main", __name__)
 
 @bp.get("/")
 def index():
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        nav_page="index"
+        )
 
 @bp.get("/courses")
 def courses():
@@ -39,11 +42,12 @@ def courses():
         location=location,
         max_cost=max_cost,
         locations=locations,
+        nav_page="courses"
     )
 
 @bp.get("/chatbot")
 def chatbot():
-    return render_template("chatbot.html")
+    return render_template("chatbot.html", nav_page="chatbot")
 
 @bp.get("/profile")
 def profile():
@@ -108,7 +112,7 @@ def profile():
         "achievements": ["🌟 First Course", "🔥 5 Course Streak", "🎨 Art Enthusiast", "🌿 Nature Lover"]
     }
     
-    return render_template("profile.html", **user_data)
+    return render_template("profile.html", nav_page="profile", **user_data)
 
 @bp.get("/instructor/<instructor_name>")
 def instructor_profile(instructor_name):
