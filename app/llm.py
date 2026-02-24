@@ -19,6 +19,34 @@ endpoint=os.getenv("ENDPOINT")
 chat_client = OpenAI(api_key=api_key, 
                     base_url=endpoint)
 
+
+ALLOWED_LOCATIONS = ALLOWED_LOCATIONS = [
+    "Bath",
+    "Brighton",
+    "Cambridge",
+    "Canterbury",
+    "Chester",
+    "Cornwall",
+    "Cotswolds",
+    "Devon",
+    "Durham",
+    "Edinburgh",
+    "Exeter",
+    "Glasgow",
+    "Harrogate",
+    "Inverness",
+    "Lake District",
+    "Norfolk",
+    "Northumberland",
+    "Oxford",
+    "Peak District",
+    "Scottish Highlands",
+    "Stratford-upon-Avon",
+    "Suffolk",
+    "Windsor",
+    "York",
+]
+
 tools = [
     {
         "type": "function",
@@ -37,7 +65,8 @@ tools = [
                     },
                     "location": {
                         "type": "string",
-                        "description": "City or region to filter by (e.g., 'Norfolk', 'London')"
+                        "description": "City or region to filter by (e.g., 'Norfolk', 'London')",
+                        "enum": ALLOWED_LOCATIONS,
                     },
                     "max_cost": {
                         "type": "string",
@@ -182,6 +211,6 @@ def call_database(
 if __name__ == "__main__":
     load_collection()
 
-    user_query = "What courses are there that are fun and that older people would be interested in? something relaxing"
+    user_query = "What courses are there that are fun and that older people would be interested in? something relaxing. Nothing more than 70 pounds. I live in scotland, so I wnat something nearby"
 
     print(call_LLM(user_query))
