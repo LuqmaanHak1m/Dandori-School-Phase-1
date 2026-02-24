@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Profile - School of Dandori</title>
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/profile.css" />
+</head>
+
+<body>
+  <img src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png" alt="" class="decorative-leaf-1" />
+  <img src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png" alt="" class="decorative-leaf-2" />
+  
+  <div class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="/static/images/dandoori-logo.png" alt="School of Dandori" class="logo" />
+        <div class="brand-name">School of Dandori</div>
+      </div>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/courses" class="nav-link">Browse Courses</a>
+        <a href="/chatbot" class="nav-link">💬 Chat</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <img src="/static/images/emma.jpg" alt="{{ user_name }}" />
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name">{{ user_name }}</h1>
+        <p class="profile-email">{{ user_email }}</p>
+        <div class="profile-stats">
+          <div class="stat">
+            <div class="stat-number">{{ upcoming_count }}</div>
+            <div class="stat-label">Upcoming</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">{{ completed_count }}</div>
+            <div class="stat-label">Completed</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">{{ total_hours }}</div>
+            <div class="stat-label">Hours Learned</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">📋 My Information</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Member Since</div>
+          <div class="info-value">{{ member_since }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Location</div>
+          <div class="info-value">{{ location }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Phone</div>
+          <div class="info-value">{{ phone }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Preferred Contact</div>
+          <div class="info-value">{{ preferred_contact }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">🌟 My Interests</h2>
+      <div>
+        {% for interest in interests %}
+        <span class="badge">{{ interest }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">📅 Upcoming Courses</h2>
+      {% if upcoming_courses %}
+        {% for course in upcoming_courses %}
+        <div class="course-card">
+          <div class="course-header">
+            <div class="course-title">{{ course.title }}</div>
+            <div class="course-date">{{ course.date }}</div>
+          </div>
+          <div class="course-details">
+            <strong>Instructor:</strong> {{ course.instructor }}<br>
+            <strong>Location:</strong> {{ course.location }}<br>
+            <strong>Time:</strong> {{ course.time }}
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state">
+          <div class="empty-state-icon">📚</div>
+          <p>No upcoming courses yet. Start your learning journey today!</p>
+          <a href="/courses" class="btn-primary">Browse Courses</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">✅ Completed Courses</h2>
+      {% if completed_courses %}
+        {% for course in completed_courses %}
+        <div class="course-card">
+          <div class="course-header">
+            <div class="course-title">{{ course.title }}</div>
+            <div class="course-date">{{ course.date }}</div>
+          </div>
+          <div class="course-details">
+            <strong>Instructor:</strong> {{ course.instructor }}<br>
+            <strong>Location:</strong> {{ course.location }}<br>
+            <strong>Rating:</strong> {{ course.rating }}
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state">
+          <div class="empty-state-icon">🎓</div>
+          <p>Complete your first course to see it here!</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">🏆 Achievements</h2>
+      <div>
+        {% for achievement in achievements %}
+        <span class="badge">{{ achievement }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
