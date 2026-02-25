@@ -1,6 +1,7 @@
 from ..db import run_sql, scalar_sql
 
 PROVIDED_MATERIALS_COL = "provided_materals"
+PROVIDED_MATERIALS_COL = "provided_materials"
 
 SEARCH_WHERE = """
 (
@@ -10,6 +11,7 @@ SEARCH_WHERE = """
   LOWER(COALESCE(learning_objectives, '')) LIKE :q OR
   LOWER(COALESCE(skills_developed, '')) LIKE :q OR
   LOWER(COALESCE(course_description, '')) LIKE :q OR
+  LOWER(COALESCE(description, '')) LIKE :q OR
   LOWER(COALESCE(class_id, '')) LIKE :q
 )
 """
@@ -25,6 +27,7 @@ SELECT
   {PROVIDED_MATERIALS_COL} AS provided_materials,
   skills_developed,
   course_description
+  description
 FROM courses
 """
 
