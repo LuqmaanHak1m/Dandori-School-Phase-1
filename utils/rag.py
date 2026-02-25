@@ -25,7 +25,7 @@ def load_data() -> list[dict]:
     return records
 
 
-def chunker(records:list[dict]):
+def chunker(records: list[dict]):
     chunks = []
 
     for i, row in enumerate(records):
@@ -39,12 +39,9 @@ def chunker(records:list[dict]):
                 "instructor": row.get("instructor"),
                 "location": row.get("location"),
                 "course_type": row.get("course_type"),
-                "cost": row.get("cost"),
-                "learning_objectives": row.get("learning_objectives"),
-                "provided_materials": row.get("provided_materials"),
-                "skills": row.get("skills_developed"),
-                "class_ID": row.get("class_ID")
-            }
+                "cost": float(row["cost"]) if row.get("cost") is not None else None,
+                "class_ID": str(row.get("class_ID")),
+            },
         }
 
         chunks.append(chunk)

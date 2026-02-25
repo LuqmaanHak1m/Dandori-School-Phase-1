@@ -18,6 +18,7 @@ load_dotenv()
 
 api_key=os.getenv("API_KEY")
 endpoint=os.getenv("ENDPOINT")
+chromadb_key=os.getenv("CHROMADB_KEY")
 
 chat_client = OpenAI(api_key=api_key, 
                     base_url=endpoint)
@@ -100,7 +101,11 @@ def inject_course_links(text, valid_course_ids):
 
 def load_collection():   
 
-    client = chromadb.PersistentClient(path="../chroma_db")
+    client = chromadb.CloudClient(
+        api_key=chromadb_key,
+        tenant='2981f49d-ec7d-4168-9e45-c9a164278c8b',
+        database='dandori-school'
+    )
 
     collection = client.get_or_create_collection("courses")
 
