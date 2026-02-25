@@ -50,7 +50,7 @@ def read_pdf(file_name):
 
     divider_SD = text2.index("Skills Developed")
 
-    provided_materials = text[: divider_SD]
+    provided_materials.append (text2[: divider_SD])
 
 
     with pdfplumber.open(file_name) as pdf:
