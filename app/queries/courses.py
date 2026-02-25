@@ -1,6 +1,5 @@
 from ..db import run_sql, scalar_sql
 
-PROVIDED_MATERIALS_COL = "provided_materals"
 PROVIDED_MATERIALS_COL = "provided_materials"
 
 SEARCH_WHERE = """
@@ -10,7 +9,6 @@ SEARCH_WHERE = """
   LOWER(COALESCE(location, '')) LIKE :q OR
   LOWER(COALESCE(learning_objectives, '')) LIKE :q OR
   LOWER(COALESCE(skills_developed, '')) LIKE :q OR
-  LOWER(COALESCE(course_description, '')) LIKE :q OR
   LOWER(COALESCE(description, '')) LIKE :q OR
   LOWER(COALESCE(class_id, '')) LIKE :q
 )
@@ -26,7 +24,6 @@ SELECT
   learning_objectives,
   {PROVIDED_MATERIALS_COL} AS provided_materials,
   skills_developed,
-  course_description
   description
 FROM courses
 """
@@ -82,7 +79,6 @@ def query_courses(q: str, location: str, max_cost: str) -> list[dict]:
     for r in rows:
         d = dict(r)
         d["class_ID"] = d.pop("class_id", None)
-        d["description"] = d.pop("course_description", None)
         if d.get("cost") is not None:
             d["cost"] = float(d["cost"])
         results.append(d)
@@ -106,7 +102,6 @@ def get_course_by_id(class_id: str) -> dict | None:
     r = rows[0]
     d = dict(r)
     d["class_ID"] = d.pop("class_id", None)
-    d["description"] = d.pop("course_description", None)
     if d.get("cost") is not None:
         d["cost"] = float(d["cost"])
     
