@@ -93,8 +93,10 @@
         <strong>Learning Objectives:</strong> {{ r.get("learning_objectives") }}
       </div>
       {% endif %} {% if r.get("description") %}
-      <div class="small">
-        <strong>Description:</strong> {{ r.get("description") }}
+      <div class="small description-container">
+        <strong>Description:</strong> 
+        <span class="description-text">{{ r.get("description") }}</span>
+        <button class="read-more-btn" onclick="toggleDescription(this)" style="display: none;">Read more</button>
       </div>
       {% endif %}
     </div>
@@ -129,4 +131,32 @@
   </div>
   {% endif %}
 </div>
+
+<script>
+function toggleDescription(btn) {
+  const container = btn.closest('.description-container');
+  const textSpan = container.querySelector('.description-text');
+  
+  if (textSpan.classList.contains('expanded')) {
+    textSpan.classList.remove('expanded');
+    btn.textContent = 'Read more';
+  } else {
+    textSpan.classList.add('expanded');
+    btn.textContent = 'Read less';
+  }
+}
+
+// Check if descriptions need "Read more" button on page load
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.description-container').forEach(container => {
+    const textSpan = container.querySelector('.description-text');
+    const btn = container.querySelector('.read-more-btn');
+    
+    // Check if text is overflowing (more than 3 lines)
+    if (textSpan.scrollHeight > textSpan.clientHeight) {
+      btn.style.display = 'inline';
+    }
+  });
+});
+</script>
 {% endblock %}

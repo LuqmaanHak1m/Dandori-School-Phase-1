@@ -1,33 +1,7 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ instructor.name }} - School of Dandori</title>
-  <link rel="stylesheet" href="/static/css/base.css" />
-  <link rel="stylesheet" href="/static/css/instructor_profile.css" />
-</head>
-
-<body>
-  <img src="/static/images/roodrigo-almeida-eo5q7PcKRL4-unsplash.png" alt="" class="decorative-leaf-1" />
-  <img src="/static/images/ruliff-andrean-WNSF9bP-8ok-unsplash.png" alt="" class="decorative-leaf-2" />
-  
-  <div class="header">
-    <div class="header-content">
-      <div class="logo-section">
-        <img src="/static/images/dandoori-logo.png" alt="School of Dandori" class="logo" />
-        <div class="brand-name">School of Dandori</div>
-      </div>
-      <div class="nav-links">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/courses" class="nav-link">Browse Courses</a>
-        <a href="/profile" class="nav-link">👤 My Profile</a>
-        <a href="/chatbot" class="nav-link">💬 Chat</a>
-      </div>
-    </div>
-  </div>
-
+{% extends "base.html" %}
+{% block title %}{{ instructor.name }} - School of Dandori{% endblock %}
+{% block stylesheet %}<link rel="stylesheet" href="/static/css/instructor_profile.css" />{% endblock %}
+{% block content %}
   <div class="container">
     <div class="instructor-header">
       <img src="/static/images/{{ instructor.image }}" alt="{{ instructor.name }}" class="instructor-avatar-large" />
@@ -106,7 +80,4 @@
       </div>
     </div>
   </div>
-
-</body>
-
-</html>
+{% endblock %}

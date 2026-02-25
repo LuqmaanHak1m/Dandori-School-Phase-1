@@ -60,9 +60,9 @@ def ensure_courses_table(engine):
         Column("location", Text, nullable=True),
         Column("cost", Numeric(10, 2), nullable=True),
         Column("learning_objectives", Text, nullable=True),
-        Column("provided_materals", Text, nullable=True),  # keep your spelling if that's your key
+        Column("provided_materials", Text, nullable=True,),  # keep your spelling if that's your key
         Column("skills_developed", Text, nullable=True),
-        Column("course_description", Text, nullable=True),
+        Column("description", Text, nullable=True),
         UniqueConstraint("class_id", name="uq_courses_class_id"),
     )
 
@@ -72,9 +72,9 @@ def ensure_courses_table(engine):
 
 def extract_all_pdfs() -> pd.DataFrame:
     files = [
-        os.path.join("data/pdfs", f)
-        for f in os.listdir("data/pdfs")
-        if os.path.isfile(os.path.join("data/pdfs", f))
+        os.path.join("../pdfs", f)
+        for f in os.listdir("../pdfs")
+        if os.path.isfile(os.path.join("../pdfs", f))
     ]
 
     courses = pd.DataFrame()
@@ -105,9 +105,9 @@ def df_to_db(engine, courses_table: Table, df: pd.DataFrame):
         "location": "location",
         "cost": "cost",
         "learning_objectives": "learning_objectives",
-        "provided_materals": "provided_materals",
+        "provided_materials": "provided_materials",
         "skills_developed": "skills_developed",
-        "course_description": "course_description",
+        "description": "description",
     }
 
     df2 = df.rename(columns=rename_map)

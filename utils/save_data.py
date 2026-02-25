@@ -31,7 +31,7 @@ def extract_all_pdfs():
 
 
 if __name__ == "__main__":
-    # data = {"Tile": "the art of wondrous waffle weaving", "Instuctor": "chef waffleby", "Location": "Harrogate", "Cost": "£75.00"}#, "learning_objectives", "provided_materals" "skills_developed", "course_description"  "class_ID"}
+    # data = {"Tile": "the art of wondrous waffle weaving", "Instuctor": "chef waffleby", "Location": "Harrogate", "Cost": "£75.00"}#, "learning_objectives", "provided_materials" "skills_developed", "course_description"  "class_ID"}
 
     df = extract_all_pdfs()
 
