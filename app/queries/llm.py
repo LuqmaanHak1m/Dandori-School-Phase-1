@@ -85,19 +85,17 @@ tools = [
 
 def inject_course_links(text, valid_course_ids):
     def repl(match):
-        raw_title = match.group(1)   # "**Laughter Yoga and Symphony of Silliness"
+        title = match.group(1).strip()
         cid = match.group(2)
 
         if cid not in valid_course_ids:
             return match.group(0)
 
-        title = raw_title.strip('*')
-
-        print(f"Links inserted")
+        print("Links inserted")
 
         return f'**<a href="/course/{cid}">{title}</a>**'
 
-    pattern = r'(\*\*[^*]+?)\s*\(course_id:\s*([a-zA-Z0-9_]+)\):?\*\*'
+    pattern = r'(?:\*\*)?([^*\n]+?)\s*\(class_ID:\s*([0-9]+)\):?(?:\*\*)?'
     return re.sub(pattern, repl, text)
 
 def load_collection():   
@@ -113,7 +111,7 @@ def load_collection():
     else:
         return collection
 
-def call_LLM(query= "", temp = 0.4, max_tokens=512):
+def call_LLM(query= "", temp = 0.8, max_tokens=512):
 
     collection = load_collection()
     
@@ -125,11 +123,12 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
                  Add a light touch of whimsy when appropriate but prioritise accuracy and clarity.
                  Do not give advice, coaching or wellbeing guidance beyond what is described in the course details. 
                  Present dates, times, locations and descriptions reliably. 
-                 If information is missing or uncertain, say so plainly.You are welcoming and gentle but primarily informational.
+                 If information is missing or uncertain, say so plainly. You are welcoming and gentle but primarily informational.
                  Return your response in a easy to read format
                  You are allowed only one tool call.
-                 When referring to a course, include its course_id in parentheses like this * **Enchanted Tart Taming (course_id: 6862):**
+                 When referring to a course, include its class_ID in parentheses like this * **Enchanted Tart Taming (class_ID: 6862):**
                  Do NOT create HTML links.
+                 You might be presented with more information than is relevant to the query. Only return the relevant information to the user.
                  """},
                 {"role": "user", "content": query}
             ]
@@ -161,7 +160,7 @@ def call_LLM(query= "", temp = 0.4, max_tokens=512):
                 q=args.get("q"),
                 locations=args.get("locations"),
                 max_cost=args.get("max_cost"),
-                top_n=args.get("top_n", 5)
+                top_n=args.get("top_n", 3)
             )
 
         else:
