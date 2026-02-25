@@ -199,14 +199,17 @@ def course_detail(course_id):
 
 @bp.get("/instructor/<instructor_name>")
 def instructor_profile(instructor_name):
-    # For now, all instructors show Ian Structore's profile
+    # Decode URL-encoded name and format it properly
+    display_name = instructor_name.replace('_', ' ').replace('%20', ' ').title()
+    
+    # For now, all instructors show Ian Structore's profile but with the correct name
     instructor_data = {
-        "name": "Ian Structore",
+        "name": display_name,
         "image": "emma.jpg",  # placeholder
         "years_teaching": 12,
         "specialties": ["Creative Writing", "Poetry", "Storytelling", "Literary Arts"],
-        "bio": "Ian Structore has been inspiring students to find their voice through the written word for over a decade. With a background in both creative writing and performance poetry, Ian brings a dynamic and engaging approach to every class. His philosophy is simple: everyone has a story to tell, and he's here to help you tell it beautifully.",
-        "full_bio": "Before becoming an instructor at the School of Dandori, Ian spent years traveling the UK, collecting stories and hosting writing workshops in community centers, libraries, and cozy cafes. His passion for the craft is infectious, and his students often describe his classes as transformative experiences that reignite their love for language. Ian believes that writing is not just about putting words on paper—it's about discovering who you are and sharing that discovery with the world.",
+        "bio": f"{display_name} has been inspiring students to find their voice through the written word for over a decade. With a background in both creative writing and performance poetry, {display_name.split()[0]} brings a dynamic and engaging approach to every class. Their philosophy is simple: everyone has a story to tell, and they're here to help you tell it beautifully.",
+        "full_bio": f"Before becoming an instructor at the School of Dandori, {display_name.split()[0]} spent years traveling the UK, collecting stories and hosting writing workshops in community centers, libraries, and cozy cafes. Their passion for the craft is infectious, and their students often describe their classes as transformative experiences that reignite their love for language. {display_name.split()[0]} believes that writing is not just about putting words on paper—it's about discovering who you are and sharing that discovery with the world.",
         "teaching_philosophy": "I believe every person has a unique perspective worth sharing. My role isn't to impose rules or structures, but to create a safe, encouraging space where creativity can flourish. Whether you're writing your first poem or your hundredth short story, my goal is to help you find confidence in your voice and joy in the process.",
         "courses": [
             "Creative Writing for Beginners",

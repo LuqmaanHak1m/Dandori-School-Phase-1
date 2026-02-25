@@ -403,3 +403,64 @@
 .browse-link:hover {
   color: #689f38;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .course-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .course-hero-image {
+    min-height: 250px;
+  }
+
+  .course-hero-content {
+    padding: 24px;
+  }
+
+  .course-title-large {
+    font-size: 26px;
+  }
+
+  .course-subtitle {
+    font-size: 15px;
+  }
+
+  .course-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .enroll-btn {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 16px;
+  }
+
+  .content-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sticky-section {
+    position: static;
+  }
+
+  .description-text {
+    font-size: 15px;
+  }
+
+  .learning-list li {
+    font-size: 15px;
+    padding: 12px 0;
+    padding-left: 28px;
+  }
+
+  .schedule-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .review-header {
+    flex-direction: column;
+    align-items: start;
+  }
+}

@@ -246,3 +246,65 @@ body::after {
   align-items: center;
   gap: 12px;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  body::after {
+    background-size: 150px auto;
+    background-position: 95% 80%;
+  }
+
+  .decorative-leaf-1,
+  .decorative-leaf-2,
+  .decorative-leaf-3 {
+    display: none;
+  }
+
+  .header {
+    padding: 16px 20px;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .logo-section {
+    justify-content: center;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .brand-name {
+    font-size: 22px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nav-link,
+  .active_page {
+    text-align: center;
+    padding: 12px 20px;
+    width: 100%;
+  }
+
+  .container {
+    padding: 20px 16px;
+  }
+
+  .section {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+}

@@ -186,3 +186,46 @@
   font-size: 14px;
   line-height: 1.6;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 32px 24px;
+    border-radius: 16px;
+  }
+
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .hero-subtitle {
+    font-size: 20px;
+  }
+
+  .hero-text {
+    font-size: 15px;
+  }
+
+  .adventure-btn {
+    padding: 14px 32px;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .info-card {
+    padding: 24px;
+  }
+
+  .info-card-title {
+    font-size: 20px;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+}

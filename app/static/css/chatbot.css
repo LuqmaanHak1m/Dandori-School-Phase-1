@@ -82,7 +82,7 @@ body {
   font-size: 14px;
   opacity: 0.95;
 }
-
+.chat-messages a{text-decoration: none;}
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -278,4 +278,96 @@ body {
   color: #666;
   max-width: 500px;
   margin: 0 auto;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .chat-container {
+    padding: 10px;
+  }
+
+  .chat-box {
+    height: calc(100vh - 20px);
+    border-radius: 12px;
+  }
+
+  .chat-header {
+    padding: 16px;
+  }
+
+  .chat-header h1 {
+    font-size: 20px;
+  }
+
+  .chat-header p {
+    font-size: 13px;
+  }
+
+  .chat-messages {
+    padding: 16px;
+  }
+
+  .message-content {
+    max-width: 85%;
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+
+  .message-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .chat-input-container {
+    padding: 16px;
+  }
+
+  .chat-input-form {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .chat-input {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .send-btn {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .welcome-message {
+    padding: 40px 16px;
+  }
+
+  .welcome-icon {
+    font-size: 48px;
+  }
+
+  .welcome-message h2 {
+    font-size: 22px;
+  }
+
+  .welcome-message p {
+    font-size: 14px;
+  }
+}
+
+/* Chatbot link styles */
+.message.bot .message-content a {
+  color: #7cb342;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255, 213, 79, 0.6);
+  transition: all 0.3s ease;
+}
+
+.message.bot .message-content a:hover {
+  color: #8bc34a;
+  text-shadow: 0 0 12px rgba(255, 213, 79, 0.8);
+}
+
+.message.bot .message-content a:visited {
+  color: #7cb342;
 }
