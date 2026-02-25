@@ -84,9 +84,6 @@ tools = [
 
 
 def inject_course_links(text, valid_course_ids):
-    print("Hello")
-    print(text)
-    print("\n\n\n")
     def repl(match):
         raw_title = match.group(1)   # "**Laughter Yoga and Symphony of Silliness"
         cid = match.group(2)
@@ -96,7 +93,7 @@ def inject_course_links(text, valid_course_ids):
 
         title = raw_title.strip('*')
 
-        print(f"✅ Linking course {cid}: {title}")
+        print(f"Links inserted")
 
         return f'**<a href="/course/{cid}">{title}</a>**'
 
