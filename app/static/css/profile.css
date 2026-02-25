@@ -187,3 +187,57 @@
   font-size: 48px;
   margin-bottom: 16px;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .profile-header {
+    padding: 24px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+
+  .profile-name {
+    font-size: 26px;
+  }
+
+  .profile-email {
+    font-size: 14px;
+  }
+
+  .profile-stats {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .stat {
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .course-card {
+    padding: 16px;
+  }
+
+  .course-header {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .course-title {
+    font-size: 16px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}

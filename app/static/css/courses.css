@@ -308,3 +308,57 @@ button[type="submit"]:hover {
 .read-more-btn:hover {
   color: #689f38;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .search-section {
+    padding: 20px;
+  }
+
+  .search-title {
+    font-size: 20px;
+  }
+
+  form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  label {
+    width: 100%;
+  }
+
+  input,
+  select {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .clear-link {
+    text-align: center;
+    display: block;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .pagination {
+    gap: 6px;
+  }
+
+  .page-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    min-width: 40px;
+  }
+}

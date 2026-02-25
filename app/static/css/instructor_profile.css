@@ -242,3 +242,55 @@
   padding-top: 10px;
   border-top: 1px solid rgba(124, 179, 66, 0.2);
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .instructor-header {
+    padding: 24px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .instructor-avatar-large {
+    width: 120px;
+    height: 120px;
+  }
+
+  .instructor-name-large {
+    font-size: 30px;
+  }
+
+  .instructor-experience-large {
+    font-size: 16px;
+  }
+
+  .specialties-inline {
+    justify-content: center;
+  }
+
+  .specialty-badge-large {
+    font-size: 14px;
+    padding: 6px 14px;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bio-text,
+  .philosophy-text {
+    font-size: 15px;
+  }
+
+  .upcoming-class {
+    padding: 14px;
+  }
+
+  .class-title {
+    font-size: 15px;
+  }
+
+  .class-detail {
+    font-size: 13px;
+  }
+}
