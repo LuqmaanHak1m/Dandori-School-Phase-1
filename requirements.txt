@@ -1,0 +1,13 @@
+flask
+flask-sqlalchemy
+psycopg2-binary
+python-dotenv
+pdfplumber
+pandas
+chromadb
+openai
+requests
+markdown
+bleach
+pypdf
+gunicorn
