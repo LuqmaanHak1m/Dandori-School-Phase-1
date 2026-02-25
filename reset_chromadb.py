@@ -18,7 +18,7 @@ try:
 except:
     print("No collection", end="\n")
 
-collection = client.get_or_create_collection("courses1")
+collection = client.get_or_create_collection("courses")
 
 embed_data(collection)
 
