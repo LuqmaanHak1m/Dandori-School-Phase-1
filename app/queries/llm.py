@@ -84,20 +84,32 @@ tools = [
 ]
 
 
-def inject_course_links(text, valid_course_ids):
+def inject_course_links_html(html, valid_course_ids):
     def repl(match):
-        title = match.group(1).strip()
-        cid = match.group(2)
+        title = match.group("title").strip()
+        cid = match.group("id")
 
         if cid not in valid_course_ids:
             return match.group(0)
 
-        print("Links inserted")
+        return (
+            f'<strong>'
+            f'<a href="/course/{cid}">{title}</a>'
+            f'</strong>'
+        )
 
-        return f'**<a href="/course/{cid}">{title}</a>**'
+    pattern = re.compile(
+        r"""
+        <strong>
+        (?P<title>[^<]+?)
+        \s*
+        \(class_ID:\s*(?P<id>\d+)\):
+        </strong>
+        """,
+        re.VERBOSE
+    )
 
-    pattern = r'(?:\*\*)?([^*\n]+?)\s*\(class_ID:\s*([0-9]+)\):?(?:\*\*)?'
-    return re.sub(pattern, repl, text)
+    return pattern.sub(repl, html)
 
 def load_collection():   
 
@@ -195,11 +207,21 @@ def call_LLM(query= "", temp = 0.8, max_tokens=512):
             for item in tool_result
         }
 
-        llm_output_links = inject_course_links(llm_output, valid_course_ids)
+        html_output = markdown.markdown(llm_output)
 
-        html_output = markdown.markdown(llm_output_links)
+        print(html_output)
 
-        safe_html = bleach.clean(html_output, tags=['p','ul','li','strong','em','b','i', 'a'], strip=True)
+        html_with_links = inject_course_links_html(html_output, valid_course_ids)
+
+        print(html_with_links)
+
+        safe_html = bleach.clean(
+            html_with_links,
+            tags=['p','ul','li','strong','em','b','i','a'],
+            attributes={'a': ['href']},
+            strip=True
+        )
+
         print(f"last html : {safe_html}")
 
         return safe_html
