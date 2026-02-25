@@ -267,8 +267,13 @@ def instructor_profile(instructor_name):
 @bp.post("/chatbot/message")
 def chatbot_message():
     data = request.get_json()
-    user_message = data.get("message", "")
+    all_messages = data.get("messages", "")
 
-    response = call_LLM(user_message)
+    print(all_messages)
+    print(type(all_messages))
+
+    contents = [message["content"] for message in all_messages]
+
+    response = call_LLM(contents)
     
     return jsonify({"response": response})

@@ -128,12 +128,12 @@ def load_collection():
     else:
         return collection
 
-def call_LLM(query= "", temp = 0.8, max_tokens=512):
+def call_LLM(query=[], temp = 0.8, max_tokens=512):
 
-    collection = load_collection()
-    
-    messages = [
-                {"role": "system", "content": """
+    print(query)
+
+
+    messages = [{"role": "system", "content": """
                  You are The Pandaroo, the friendly mascot of a whimsical, 
                  adult-only wellbeing school. Your role is to inform users about upcoming courses, 
                  classes and events. Communicate clearly, calmly and warmly. 
@@ -146,11 +146,20 @@ def call_LLM(query= "", temp = 0.8, max_tokens=512):
                  When referring to a course, include its class_ID in parentheses like this * **Enchanted Tart Taming (class_ID: 6862):**
                  Do NOT create HTML links.
                  You might be presented with more information than is relevant to the query. Only return the relevant information to the user.
-                 """},
-                {"role": "user", "content": query}
-            ]
+                 """}]
+    
+    
+    for index, message in enumerate(query):
+        if (index % 2) == 0:
+            messages.append({"role": "user", "content": query[index]})
+        else:
+            messages.append({"role": "assistant", "content": query[index]})
 
-    if query != "":
+    print(messages)
+
+    collection = load_collection()
+
+    if not query[-1] == "":
         # Get a response from the client
         response = chat_client.chat.completions.create(
             model="google/gemini-2.0-flash-001",
@@ -209,11 +218,7 @@ def call_LLM(query= "", temp = 0.8, max_tokens=512):
 
         html_output = markdown.markdown(llm_output)
 
-        print(html_output)
-
         html_with_links = inject_course_links_html(html_output, valid_course_ids)
-
-        print(html_with_links)
 
         safe_html = bleach.clean(
             html_with_links,
@@ -221,8 +226,6 @@ def call_LLM(query= "", temp = 0.8, max_tokens=512):
             attributes={'a': ['href']},
             strip=True
         )
-
-        print(f"last html : {safe_html}")
 
         return safe_html
 
@@ -282,4 +285,24 @@ if __name__ == "__main__":
 
     user_query = "What courses are there that are fun and that older people would be interested in? something relaxing. Nothing more than 70 pounds. I live in scotland, so I wnat something nearby"
 
-    print(call_LLM(user_query))
+    # print(user_query)
+
+    bot_response = call_LLM([user_query])
+
+    # print(bot_response)
+
+    new_query = "What about more than 70 pounds?"
+
+    # print(new_query)
+
+    second_response = call_LLM([user_query, bot_response, new_query])
+
+    print(second_response)
+
+    new_query2 = "Repeat all the queries I have sent to you before to the best of your ability"
+
+    # print(new_query2)
+
+    final_response = call_LLM([new_query, second_response, new_query2])
+
+    print(final_response)

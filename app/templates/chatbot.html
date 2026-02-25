@@ -1,127 +1,160 @@
 {% extends "base.html" %}
 {% block title %}School of Dandoori - Course Assistant{% endblock %}
-{% block stylesheet %} <link rel="stylesheet" href="/static/css/chatbot.css" />{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/css/chatbot.css" />{% endblock %}
 {% block content %}
-  <div class="chat-container">
-    <div class="chat-box">
-      <div class="chat-header">
-        <h1>🌙 Course Assistant</h1>
-        <p>Ask me anything about our courses and I'll help you find the perfect match!</p>
-      </div>
+<div class="chat-container">
+  <div class="chat-box">
+    <div class="chat-header">
+      <h1>🌙 Course Assistant</h1>
+      <p>Ask me anything about our courses and I'll help you find the perfect match!</p>
+    </div>
 
-      <div class="chat-messages" id="chatMessages">
-        <div class="welcome-message">
-          <div class="welcome-icon">🌱</div>
-          <h2>Welcome to Dandoori!</h2>
-          <p>I'm your course assistant. Ask me about courses, instructors, locations, or skills you'd like to learn.
-            Let's find the perfect learning journey for you!</p>
-        </div>
-      </div>
-
-      <div class="chat-input-container">
-        <form class="chat-input-form" id="chatForm">
-          <input type="text" class="chat-input" id="messageInput" placeholder="Ask me about courses..."
-            autocomplete="off" required />
-          <button type="submit" class="send-btn" id="sendBtn">Send</button>
-        </form>
+    <div class="chat-messages" id="chatMessages">
+      <div class="welcome-message">
+        <div class="welcome-icon">🌱</div>
+        <h2>Welcome to Dandoori!</h2>
+        <p>I'm your course assistant. Ask me about courses, instructors, locations, or skills you'd like to learn.
+          Let's find the perfect learning journey for you!</p>
       </div>
     </div>
+
+    <div class="chat-input-container">
+      <form class="chat-input-form" id="chatForm">
+        <input type="text" class="chat-input" id="messageInput" placeholder="Ask me about courses..." autocomplete="off"
+          required />
+        <button type="submit" class="send-btn" id="sendBtn">Send</button>
+      </form>
+    </div>
   </div>
+</div>
 
-  <script>
-    const chatMessages = document.getElementById('chatMessages');
-    const chatForm = document.getElementById('chatForm');
-    const messageInput = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
+<script>
+  const chatMessages = document.getElementById('chatMessages');
+  const chatForm = document.getElementById('chatForm');
+  const messageInput = document.getElementById('messageInput');
+  const sendBtn = document.getElementById('sendBtn');
 
-    function addMessage(text, isUser = false) {
-      const welcomeMsg = chatMessages.querySelector('.welcome-message');
-      if (welcomeMsg) {
-        welcomeMsg.remove();
-      }
-
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-
-      const avatar = document.createElement('div');
-      avatar.className = 'message-avatar';
-      avatar.textContent = isUser ? '👤' : '🌙';
-
-      const content = document.createElement('div');
-      content.className = 'message-content';
-      content.innerHTML = text;
-
-      messageDiv.appendChild(avatar);
-      messageDiv.appendChild(content);
-      chatMessages.appendChild(messageDiv);
-
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+  function addMessage(text, isUser = false) {
+    const welcomeMsg = chatMessages.querySelector('.welcome-message');
+    if (welcomeMsg) {
+      welcomeMsg.remove();
     }
 
-    function showTypingIndicator() {
-      const indicator = document.createElement('div');
-      indicator.className = 'message bot';
-      indicator.id = 'typingIndicator';
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
 
-      const avatar = document.createElement('div');
-      avatar.className = 'message-avatar';
-      avatar.textContent = '🌙';
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.textContent = isUser ? '👤' : '🌙';
 
-      const typing = document.createElement('div');
-      typing.className = 'typing-indicator active';
-      typing.innerHTML = '<span></span><span></span><span></span>';
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    content.innerHTML = text;
 
-      indicator.appendChild(avatar);
-      indicator.appendChild(typing);
-      chatMessages.appendChild(indicator);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(content);
+    chatMessages.appendChild(messageDiv);
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function showTypingIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'message bot';
+    indicator.id = 'typingIndicator';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.textContent = '🌙';
+
+    const typing = document.createElement('div');
+    typing.className = 'typing-indicator active';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+
+    indicator.appendChild(avatar);
+    indicator.appendChild(typing);
+    chatMessages.appendChild(indicator);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function hideTypingIndicator() {
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) {
+      indicator.remove();
     }
+  }
 
-    function hideTypingIndicator() {
-      const indicator = document.getElementById('typingIndicator');
-      if (indicator) {
-        indicator.remove();
-      }
-    }
+  // Utility function to strip HTML
+  function stripHTML(html) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  }
 
-    chatForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      const message = messageInput.value.trim();
-      if (!message) return;
+    const message = messageInput.value.trim();
+    if (!message) return;
 
-      addMessage(message, true);
-      messageInput.value = '';
-      sendBtn.disabled = true;
+    // Add current user message to the chat
+    addMessage(message, true);
+    messageInput.value = '';
+    sendBtn.disabled = true;
 
-      showTypingIndicator();
+    showTypingIndicator();
 
-      try {
-        const response = await fetch('/chatbot/message', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: message })
+    // Gather the last 3 messages (user, bot, user) if available
+    const allMessages = Array.from(chatMessages.querySelectorAll('.message'));
+    let payloadMessages = [];
+
+    // Loop backwards to get last 3 relevant messages
+    for (let i = allMessages.length - 1; i >= 0 && payloadMessages.length < 3; i--) {
+      const msgDiv = allMessages[i];
+      const isUser = msgDiv.classList.contains('user');
+      const textDiv = msgDiv.querySelector('.message-content');
+      if (textDiv) {
+        payloadMessages.unshift({
+          role: isUser ? 'user' : 'bot',
+          content: stripHTML(textDiv.innerHTML) // strip HTML here
         });
-
-        const data = await response.json();
-        hideTypingIndicator();
-
-        if (data.response) {
-          addMessage(data.response);
-        } else {
-          addMessage('Sorry, I encountered an error. Please try again.');
-        }
-      } catch (error) {
-        hideTypingIndicator();
-        addMessage('Sorry, I couldn\'t connect to the server. Please try again.');
       }
+    }
 
-      sendBtn.disabled = false;
-      messageInput.focus();
-    });
+    // Ensure current user message is included
+    if (!payloadMessages.some(m => m.role === 'user' && m.content === message)) {
+      payloadMessages.push({ role: 'user', content: message });
+    }
 
+    console.log(payloadMessages)
+
+    try {
+      const response = await fetch('/chatbot/message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages: payloadMessages }) // send last 3 messages
+      });
+
+      const data = await response.json();
+      hideTypingIndicator();
+
+      if (data.response) {
+        addMessage(data.response);
+      } else {
+        addMessage('Sorry, I encountered an error. Please try again.');
+      }
+    } catch (error) {
+      hideTypingIndicator();
+      addMessage('Sorry, I couldn\'t connect to the server. Please try again.');
+    }
+
+    sendBtn.disabled = false;
     messageInput.focus();
-  </script>
+  });
+
+  messageInput.focus();
+</script>
 {% endblock %}
